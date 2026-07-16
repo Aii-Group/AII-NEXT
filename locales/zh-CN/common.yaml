@@ -1,0 +1,136 @@
+Language:
+  Label: 语言
+  Zh_CN: 简体中文
+  En_US: English
+
+Actions:
+  Add: 新增
+  Create: 创建
+  View: 查看
+  Edit: 编辑
+  Delete: 删除
+  Remove: 移除
+  Save: 保存
+  Submit: 提交
+  Confirm: 确认
+  Cancel: 取消
+  Close: 关闭
+  Back: 返回
+  Previous: 上一步
+  Next: 下一步
+  Search: 查询
+  Reset: 重置
+  Refresh: 刷新
+  Retry: 重试
+  Export: 导出
+  Import: 导入
+  Upload: 上传
+  Download: 下载
+  Copy: 复制
+  Preview: 预览
+  Print: 打印
+  Login: 登录
+  Logout: 退出登录
+  Enable: 启用
+  Disable: 禁用
+  Activate: 激活
+  Deactivate: 停用
+  More: 更多
+  Select_All: 全选
+  Clear: 清空
+  Go_Home: 返回首页
+
+General:
+  Loading: 加载中...
+  Loading_More: 加载更多...
+  Load_More: 上拉加载更多
+  No_More: 没有更多了
+  Empty: 暂无数据
+  No_Data: 暂无数据
+  All: 全部
+  None: 无
+  Yes: 是
+  No: 否
+  Success: 成功
+  Failed: 失败
+  Error: 错误
+  Warning: 警告
+  Info: 信息
+  Tips: 提示
+  Optional: 可选
+  Required: 必填
+  Total: 总数
+  Items: 条
+  Copied: 已复制
+  Unknown: 未知
+
+Fields:
+  ID: ID
+  Name: 名称
+  User_Name: 用户名
+  Password: 密码
+  Email: 邮箱
+  Phone: 电话
+  Address: 地址
+  Status: 状态
+  Description: 描述
+  Remark: 备注
+  Keyword: 关键词
+  Type: 类型
+  Category: 分类
+  Role: 角色
+  Department: 部门
+  Gender: 性别
+  Age: 年龄
+  Attachment: 附件
+  Sort: 排序
+  Start_Date: 开始日期
+  End_Date: 结束日期
+  Created_At: 创建时间
+  Updated_At: 更新时间
+  Created_By: 创建人
+  Updated_By: 更新人
+
+AII_Table:
+  Selected: 已选：{{count}}
+  Uncheck: 取消选择
+  Batch_Delete: 批量删除
+  More: 更多
+  Pagination_Total: 共 {{total}} 条
+  Page_Size_Label: 每页显示
+  Action: 操作
+  Serial_Number: 序号
+
+AII_Search:
+  Search: 查询
+  Reset: 重置
+  Expand: 展开
+  Collapse: 收起
+
+Header:
+  Theme: 切换主题
+  Locale: 切换语言
+  User: 用户
+  Profile: 个人中心
+  Logout: 退出登录
+  Fullscreen: 全屏
+  Exit_Fullscreen: 退出全屏
+  Remind: 提醒
+
+Login:
+  Preferences: 界面偏好设置
+  Title: 基于 AsiaInfo 平台构建
+  Description: 统一身份认证，安全便捷地访问企业应用与服务。
+  Username_Label: 用户名
+  Username_Placeholder: 请输入用户名
+  Password_Placeholder: 请输入密码
+  Remember_Me: 记住我
+  Continue: 继续登录
+  Copyright: '© {{year}} 亚信国际. 保留所有权利。'
+
+Status_Page:
+  Not_Found_Title: 页面不存在
+  Not_Found_Description: 您访问的页面不存在。
+  Forbidden_Title: 无权限
+  Forbidden_Description: 您没有权限访问此页面。
+  Error_Title: 出错了

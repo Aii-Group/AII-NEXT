@@ -1,0 +1,136 @@
+Language:
+  Label: Language
+  Zh_CN: 简体中文
+  En_US: English
+
+Actions:
+  Add: Add
+  Create: Create
+  View: View
+  Edit: Edit
+  Delete: Delete
+  Remove: Remove
+  Save: Save
+  Submit: Submit
+  Confirm: Confirm
+  Cancel: Cancel
+  Close: Close
+  Back: Back
+  Previous: Previous
+  Next: Next
+  Search: Search
+  Reset: Reset
+  Refresh: Refresh
+  Retry: Retry
+  Export: Export
+  Import: Import
+  Upload: Upload
+  Download: Download
+  Copy: Copy
+  Preview: Preview
+  Print: Print
+  Login: Log In
+  Logout: Log Out
+  Enable: Enable
+  Disable: Disable
+  Activate: Activate
+  Deactivate: Deactivate
+  More: More
+  Select_All: Select All
+  Clear: Clear
+  Go_Home: Go Home
+
+General:
+  Loading: Loading...
+  Loading_More: Loading more...
+  Load_More: Scroll to load more
+  No_More: No more data
+  Empty: No data
+  No_Data: No data
+  All: All
+  None: None
+  Yes: Yes
+  No: No
+  Success: Success
+  Failed: Failed
+  Error: Error
+  Warning: Warning
+  Info: Information
+  Tips: Tips
+  Optional: Optional
+  Required: Required
+  Total: Total
+  Items: Items
+  Copied: Copied
+  Unknown: Unknown
+
+Fields:
+  ID: ID
+  Name: Name
+  User_Name: Username
+  Password: Password
+  Email: Email
+  Phone: Phone
+  Address: Address
+  Status: Status
+  Description: Description
+  Remark: Remark
+  Keyword: Keyword
+  Type: Type
+  Category: Category
+  Role: Role
+  Department: Department
+  Gender: Gender
+  Age: Age
+  Attachment: Attachment
+  Sort: Sort
+  Start_Date: Start Date
+  End_Date: End Date
+  Created_At: Created At
+  Updated_At: Updated At
+  Created_By: Created By
+  Updated_By: Updated By
+
+AII_Table:
+  Selected: 'Selected: {{count}}'
+  Uncheck: Clear Selection
+  Batch_Delete: Batch Delete
+  More: More
+  Pagination_Total: 'Total: {{total}}'
+  Page_Size_Label: Per Page
+  Action: Action
+  Serial_Number: No.
+
+AII_Search:
+  Search: Search
+  Reset: Reset
+  Expand: Expand
+  Collapse: Collapse
+
+Header:
+  Theme: Toggle theme
+  Locale: Change language
+  User: User
+  Profile: Profile
+  Logout: Log out
+  Fullscreen: Fullscreen
+  Exit_Fullscreen: Exit fullscreen
+  Remind: Remind
+
+Login:
+  Preferences: Interface preferences
+  Title: Built on the AsiaInfo Platform
+  Description: Secure, unified identity access for enterprise applications and services.
+  Username_Label: Username
+  Username_Placeholder: Enter your username
+  Password_Placeholder: Enter your password
+  Remember_Me: Remember me
+  Continue: Continue
+  Copyright: '© {{year}} AsiaInfo. All rights reserved.'
+
+Status_Page:
+  Not_Found_Title: Page Not Found
+  Not_Found_Description: The page you are looking for does not exist.
+  Forbidden_Title: Forbidden
+  Forbidden_Description: You are not authorized to access this page.
+  Error_Title: Something went wrong

@@ -1,0 +1,120 @@
+.aii-table-pagination.ant-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  width: 100%;
+  margin-bottom: 0 !important;
+}
+
+.aii-table-pagination.ant-pagination > li {
+  display: flex;
+  align-items: center;
+}
+
+.aii-table-pagination .ant-pagination-options {
+  order: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: auto;
+  margin-inline-start: 0 !important;
+}
+
+.aii-table-pagination .ant-pagination-options-quick-jumper {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: auto;
+  line-height: 1;
+  vertical-align: middle;
+}
+
+.aii-table-pagination .ant-pagination-options-quick-jumper input {
+  width: 48px;
+  height: 28px;
+  margin: 0;
+  padding-block: 0;
+  vertical-align: middle;
+}
+
+.aii-table-pagination .ant-pagination-total-text {
+  order: 2;
+  display: inline-flex;
+  align-items: center;
+  height: auto;
+  margin-inline-start: 16px;
+  line-height: 1;
+  color: inherit;
+}
+
+.aii-table-pagination .ant-pagination-prev {
+  order: 10;
+  margin-inline-start: auto !important;
+}
+
+.aii-table-pagination .ant-pagination-item,
+.aii-table-pagination .ant-pagination-jump-prev,
+.aii-table-pagination .ant-pagination-jump-next,
+.aii-table-pagination .ant-pagination-simple-pager {
+  order: 11;
+}
+
+.aii-table-pagination .ant-pagination-next {
+  order: 12;
+}
+
+.aii-table-pagination .ant-pagination-prev .ant-pagination-item-link,
+.aii-table-pagination .ant-pagination-next .ant-pagination-item-link,
+.aii-table-pagination .ant-pagination-item,
+.aii-table-pagination .ant-pagination-jump-prev .ant-pagination-item-container,
+.aii-table-pagination .ant-pagination-jump-next .ant-pagination-item-container {
+  background: transparent;
+  border: 0;
+}
+
+.aii-table-pagination .ant-pagination-simple-pager {
+  margin-inline-end: 0;
+  background: transparent;
+  border: 0;
+}
+
+.aii-table-pagination .ant-pagination-options-size-changer.ant-select {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.aii-table-pagination .ant-pagination-options-size-changer .ant-select-selector {
+  display: flex;
+  align-items: center;
+  height: auto !important;
+  min-height: unset;
+  padding-block: 0 !important;
+  padding-inline: 4px !important;
+}
+
+.aii-table-page-size-popup .ant-select-item-option-content {
+  text-align: center;
+}
+
+.aii-table-page-size-popup .ant-select-item {
+  justify-content: center;
+}
+
+.aii-table-pagination-full.ant-pagination > li.ant-pagination-options {
+  display: contents !important;
+}
+
+.aii-table-pagination-full .ant-pagination-options-size-changer {
+  order: 1;
+}
+
+.aii-table-pagination-full .ant-pagination-options-quick-jumper {
+  order: 9;
+  margin-inline-start: auto;
+  margin-inline-end: 16px;
+}
+
+.aii-table-pagination-full .ant-pagination-prev {
+  margin-inline-start: 0 !important;
+}

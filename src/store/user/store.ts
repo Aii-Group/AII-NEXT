@@ -1,0 +1,23 @@
+import { create } from 'zustand';
+import { createJSONStorage, devtools, persist } from 'zustand/middleware';
+import { USER_STORAGE_KEY } from '@/constants/storage';
+import { flattenActions, type Bindable } from '@/store/helpers/flattenActions';
+import { createUserSlice, type UserAction, type UserStore } from '@/store/user/actions';
+import { initialUserState } from '@/store/user/initialState';
+
+export const useUserStore = create<UserStore>()(
+  devtools(
+    persist(
+      (set) => ({
+        ...initialUserState,
+        ...flattenActions<UserAction>([createUserSlice(set) as unknown as Bindable]),
+      }),
+      {
+        name: USER_STORAGE_KEY,
+        storage: createJSONStorage(() => localStorage),
+        partialize: (state) => ({ user: state.user }),
+      },
+    ),
+    { name: 'UserStore' },
+  ),
+);

@@ -1,0 +1,15 @@
+Request_Failed: Request failed
+Network_Error: Network error. Please try again later.
+Server_Error: Service error. Please try again later.
+Session_Expired: Your session has expired. Please sign in again.
+Download_Failed: File download failed
+Http_400: Request failed. Please try again later.
+Http_401: Session expired. Redirecting to sign in shortly.
+Http_403: You do not have permission to access this resource.
+Http_404: Sorry, the page you visited does not exist.
+Http_405: Method not allowed. Please try again later.
+Http_408: Request timed out. Please try again later.
+Http_500: Sorry, the server is busy. Please try again later.
+Http_502: Bad gateway.
+Http_503: Service unavailable.
+Http_504: Gateway timeout.

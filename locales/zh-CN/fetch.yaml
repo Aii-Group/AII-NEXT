@@ -1,0 +1,15 @@
+Request_Failed: 请求失败
+Network_Error: 网络异常，请稍后重试
+Server_Error: 服务异常，请稍后重试
+Session_Expired: 登录已过期，请重新登录
+Download_Failed: 文件下载失败
+Http_400: 请求失败！请稍后重试
+Http_401: 登录已过期！即将跳转至登录页面
+Http_403: 当前账号无权限访问！
+Http_404: 抱歉，您访问的页面不存在
+Http_405: 请求方法错误！请稍后重试
+Http_408: 请求超时！请稍后重试
+Http_500: 抱歉，服务器繁忙，请稍后重试
+Http_502: 网关错误！
+Http_503: 服务不可用！
+Http_504: 网关超时！

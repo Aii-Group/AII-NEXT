@@ -1,0 +1,29 @@
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
+}
+
+[data-theme-transition='to-dark']::view-transition-old(root) {
+  z-index: 1;
+}
+
+[data-theme-transition='to-dark']::view-transition-new(root) {
+  z-index: 999;
+}
+
+[data-theme-transition='to-light']::view-transition-old(root) {
+  z-index: 999;
+}
+
+[data-theme-transition='to-light']::view-transition-new(root) {
+  z-index: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}

@@ -1,0 +1,54 @@
+@import 'tailwindcss';
+@import './theme/antd-tokens.css';
+@import './styles/progress.css';
+@import './styles/theme-transition.css';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --background-light: #fbfaf7;
+  --background-dark: #121212;
+}
+
+@layer base {
+  *,
+  *::before,
+  *::after {
+    @apply border-border;
+  }
+
+  html {
+    @apply scroll-smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    @apply min-h-0 font-sans text-foreground antialiased;
+    background-color: var(--background-light);
+  }
+
+  .dark body {
+    background-color: var(--background-dark);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-semibold tracking-tight text-foreground;
+  }
+
+  a {
+    @apply text-link underline-offset-4 hover:underline;
+  }
+
+  :focus-visible {
+    @apply ring-2 ring-ring ring-offset-2 ring-offset-background outline-none;
+  }
+
+  ::selection {
+    @apply bg-primary/20 text-foreground;
+  }
+}

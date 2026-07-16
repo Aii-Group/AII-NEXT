@@ -1,0 +1,234 @@
+/* 由 scripts/generate-antd-tailwind-theme.ts 生成，请勿手动编辑 */
+/* 修改 src/constants/brand.ts 中 BrandSeed 后执行: pnpm theme:sync */
+
+@theme {
+  --color-background: #ffffff;
+  --color-foreground: rgba(0, 0, 0, 0.88);
+  --color-primary: #697eff;
+  --color-primary-foreground: #fff;
+  --color-secondary: rgba(0, 0, 0, 0.02);
+  --color-secondary-foreground: rgba(0, 0, 0, 0.88);
+  --color-muted: rgba(0, 0, 0, 0.02);
+  --color-muted-foreground: rgba(0, 0, 0, 0.65);
+  --color-accent: rgba(0, 0, 0, 0.04);
+  --color-accent-foreground: rgba(0, 0, 0, 0.88);
+  --color-destructive: #ff4d4f;
+  --color-destructive-foreground: #fff;
+  --color-border: #d9d9d9;
+  --color-ring: #697eff;
+  --color-ring-offset: #ffffff;
+  --color-card: #ffffff;
+  --color-card-foreground: rgba(0, 0, 0, 0.88);
+  --color-success: #52c41a;
+  --color-warning: #faad14;
+  --color-error: #ff4d4f;
+  --color-info: #697eff;
+  --color-link: #697eff;
+  --color-mask: rgba(0, 0, 0, 0.45);
+  --color-error-active: #d9363e;
+  --color-error-affix: #ff4d4f;
+  --color-error-bg: #fff2f0;
+  --color-error-bg-active: #ffccc7;
+  --color-error-bg-filled-hover: #ffdfdc;
+  --color-error-bg-hover: #fff1f0;
+  --color-error-border: #ffccc7;
+  --color-error-border-hover: #ffa39e;
+  --color-error-hover: #ff7875;
+  --color-error-outline: rgba(255, 38, 5, 0.06);
+  --color-error-text: #ff4d4f;
+  --color-error-text-active: #d9363e;
+  --color-error-text-hover: #ff7875;
+  --color-info-active: #4e5cd9;
+  --color-info-bg: #f0f4ff;
+  --color-info-bg-hover: #f0f4ff;
+  --color-info-border: #e3e9ff;
+  --color-info-border-hover: #bac8ff;
+  --color-info-hover: #bac8ff;
+  --color-info-text: #697eff;
+  --color-info-text-active: #4e5cd9;
+  --color-info-text-hover: #91a4ff;
+  --color-primary-active: #4e5cd9;
+  --color-primary-bg: #f0f4ff;
+  --color-primary-bg-hover: #f0f4ff;
+  --color-primary-border: #e3e9ff;
+  --color-primary-border-hover: #bac8ff;
+  --color-primary-hover: #91a4ff;
+  --color-primary-text: #697eff;
+  --color-primary-text-active: #4e5cd9;
+  --color-primary-text-hover: #91a4ff;
+  --color-success-active: #389e0d;
+  --color-success-bg: #f6ffed;
+  --color-success-bg-hover: #d9f7be;
+  --color-success-border: #b7eb8f;
+  --color-success-border-hover: #95de64;
+  --color-success-hover: #95de64;
+  --color-success-text: #52c41a;
+  --color-success-text-active: #389e0d;
+  --color-success-text-hover: #73d13d;
+  --color-warning-active: #d48806;
+  --color-warning-affix: #faad14;
+  --color-warning-bg: #fffbe6;
+  --color-warning-bg-hover: #fff1b8;
+  --color-warning-border: #ffe58f;
+  --color-warning-border-hover: #ffd666;
+  --color-warning-hover: #ffd666;
+  --color-warning-outline: rgba(255, 215, 5, 0.1);
+  --color-warning-text: #faad14;
+  --color-warning-text-active: #d48806;
+  --color-warning-text-hover: #ffc53d;
+  --shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+  --shadow-card: 0 1px 2px -2px rgba(0, 0, 0, 0.16), 0 3px 6px 0 rgba(0, 0, 0, 0.12), 0 5px 12px 4px rgba(0, 0, 0, 0.09);
+  --shadow-drawer-down: 0 -6px 16px 0 rgba(0, 0, 0, 0.08), 0 -3px 6px -4px rgba(0, 0, 0, 0.12), 0 -9px 28px 8px rgba(0, 0, 0, 0.05);
+  --shadow-drawer-left: 6px 0 16px 0 rgba(0, 0, 0, 0.08), 3px 0 6px -4px rgba(0, 0, 0, 0.12), 9px 0 28px 8px rgba(0, 0, 0, 0.05);
+  --shadow-drawer-right: -6px 0 16px 0 rgba(0, 0, 0, 0.08), -3px 0 6px -4px rgba(0, 0, 0, 0.12), -9px 0 28px 8px rgba(0, 0, 0, 0.05);
+  --shadow-drawer-up: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+  --shadow-popover-arrow: 2px 2px 5px rgba(0, 0, 0, 0.05);
+  --shadow-secondary: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
+  --shadow-tabs-overflow-bottom: inset 0 -10px 8px -8px rgba(0, 0, 0, 0.08);
+  --shadow-tabs-overflow-left: inset 10px 0 8px -8px rgba(0, 0, 0, 0.08);
+  --shadow-tabs-overflow-right: inset -10px 0 8px -8px rgba(0, 0, 0, 0.08);
+  --shadow-tabs-overflow-top: inset 0 10px 8px -8px rgba(0, 0, 0, 0.08);
+  --shadow-tertiary: 0 1px 2px 0 rgba(0, 0, 0, 0.05), 0 1px 6px -1px rgba(0, 0, 0, 0.03), 0 2px 4px 0 rgba(0, 0, 0, 0.03);
+  --duration-fast: 0.1s;
+  --duration-mid: 0.2s;
+  --duration-slow: 0.3s;
+  --ease-in-back: cubic-bezier(0.71, -0.46, 0.88, 0.6);
+  --ease-in-out: cubic-bezier(0.645, 0.045, 0.355, 1);
+  --ease-in-out-circ: cubic-bezier(0.78, 0.14, 0.15, 0.86);
+  --ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+  --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+  --ease-out-back: cubic-bezier(0.12, 0.4, 0.29, 1.46);
+  --ease-out-circ: cubic-bezier(0.08, 0.82, 0.17, 1);
+  --ease-out-quint: cubic-bezier(0.23, 1, 0.32, 1);
+  --motion-unit: 0.1;
+  --motion-base: 0;
+  --default-transition-duration: 0.2s;
+  --default-transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1);
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 14px;
+}
+
+.dark {
+  --color-background: #141414;
+  --color-foreground: rgba(255, 255, 255, 0.85);
+  --color-primary: #5c6edc;
+  --color-primary-foreground: #fff;
+  --color-secondary: rgba(255, 255, 255, 0.04);
+  --color-secondary-foreground: rgba(255, 255, 255, 0.85);
+  --color-muted: rgba(255, 255, 255, 0.04);
+  --color-muted-foreground: rgba(255, 255, 255, 0.65);
+  --color-accent: rgba(255, 255, 255, 0.08);
+  --color-accent-foreground: rgba(255, 255, 255, 0.85);
+  --color-destructive: #dc4446;
+  --color-destructive-foreground: #fff;
+  --color-border: #424242;
+  --color-ring: #5c6edc;
+  --color-ring-offset: #141414;
+  --color-card: #141414;
+  --color-card-foreground: rgba(255, 255, 255, 0.85);
+  --color-success: #49aa19;
+  --color-warning: #d89614;
+  --color-error: #dc4446;
+  --color-info: #5c6edc;
+  --color-link: #5c6edc;
+  --color-mask: rgba(0, 0, 0, 0.45);
+  --color-error-active: #ad393a;
+  --color-error-affix: #dc4446;
+  --color-error-bg: #2c1618;
+  --color-error-bg-active: #5b2526;
+  --color-error-bg-filled-hover: #441e1f;
+  --color-error-bg-hover: #451d1f;
+  --color-error-border: #5b2526;
+  --color-error-border-hover: #7e2e2f;
+  --color-error-hover: #e86e6b;
+  --color-error-outline: rgba(238, 38, 56, 0.11);
+  --color-error-text: #dc4446;
+  --color-error-text-active: #ad393a;
+  --color-error-text-hover: #e86e6b;
+  --color-info-active: #4b59ad;
+  --color-info-bg: #191b2c;
+  --color-info-bg-hover: #232645;
+  --color-info-border: #2e345b;
+  --color-info-border-hover: #3a447e;
+  --color-info-hover: #3a447e;
+  --color-info-text: #5c6edc;
+  --color-info-text-active: #4b59ad;
+  --color-info-text-hover: #8596e8;
+  --color-primary-active: #4b59ad;
+  --color-primary-bg: #2e345b;
+  --color-primary-bg-hover: #3a447e;
+  --color-primary-border: #2e345b;
+  --color-primary-border-hover: #3a447e;
+  --color-primary-hover: #8596e8;
+  --color-primary-text: #5c6edc;
+  --color-primary-text-active: #4b59ad;
+  --color-primary-text-hover: #8596e8;
+  --color-success-active: #3c8618;
+  --color-success-bg: #162312;
+  --color-success-bg-hover: #1d3712;
+  --color-success-border: #274916;
+  --color-success-border-hover: #306317;
+  --color-success-hover: #306317;
+  --color-success-text: #49aa19;
+  --color-success-text-active: #3c8618;
+  --color-success-text-hover: #6abe39;
+  --color-warning-active: #aa7714;
+  --color-warning-affix: #d89614;
+  --color-warning-bg: #2b2111;
+  --color-warning-bg-hover: #443111;
+  --color-warning-border: #594214;
+  --color-warning-border-hover: #7c5914;
+  --color-warning-hover: #7c5914;
+  --color-warning-outline: rgba(173, 107, 0, 0.15);
+  --color-warning-text: #d89614;
+  --color-warning-text-active: #aa7714;
+  --color-warning-text-hover: #e8b339;
+  --shadow:
+    0 6px 16px 0 rgba(255, 255, 255, 0.016), 0 3px 6px -4px rgba(255, 255, 255, 0.024),
+    0 9px 28px 8px rgba(255, 255, 255, 0.010000000000000002);
+  --shadow-card:
+    0 1px 2px -2px rgba(255, 255, 255, 0.032), 0 3px 6px 0 rgba(255, 255, 255, 0.024), 0 5px 12px 4px rgba(255, 255, 255, 0.018);
+  --shadow-drawer-down:
+    0 -6px 16px 0 rgba(255, 255, 255, 0.016), 0 -3px 6px -4px rgba(255, 255, 255, 0.024),
+    0 -9px 28px 8px rgba(255, 255, 255, 0.010000000000000002);
+  --shadow-drawer-left:
+    6px 0 16px 0 rgba(255, 255, 255, 0.016), 3px 0 6px -4px rgba(255, 255, 255, 0.024),
+    9px 0 28px 8px rgba(255, 255, 255, 0.010000000000000002);
+  --shadow-drawer-right:
+    -6px 0 16px 0 rgba(255, 255, 255, 0.016), -3px 0 6px -4px rgba(255, 255, 255, 0.024),
+    -9px 0 28px 8px rgba(255, 255, 255, 0.010000000000000002);
+  --shadow-drawer-up:
+    0 6px 16px 0 rgba(255, 255, 255, 0.016), 0 3px 6px -4px rgba(255, 255, 255, 0.024),
+    0 9px 28px 8px rgba(255, 255, 255, 0.010000000000000002);
+  --shadow-popover-arrow: 2px 2px 5px rgba(255, 255, 255, 0.010000000000000002);
+  --shadow-secondary:
+    0 6px 16px 0 rgba(255, 255, 255, 0.016), 0 3px 6px -4px rgba(255, 255, 255, 0.024),
+    0 9px 28px 8px rgba(255, 255, 255, 0.010000000000000002);
+  --shadow-tabs-overflow-bottom: inset 0 -10px 8px -8px rgba(255, 255, 255, 0.016);
+  --shadow-tabs-overflow-left: inset 10px 0 8px -8px rgba(255, 255, 255, 0.016);
+  --shadow-tabs-overflow-right: inset -10px 0 8px -8px rgba(255, 255, 255, 0.016);
+  --shadow-tabs-overflow-top: inset 0 10px 8px -8px rgba(255, 255, 255, 0.016);
+  --shadow-tertiary:
+    0 1px 2px 0 rgba(255, 255, 255, 0.010000000000000002), 0 1px 6px -1px rgba(255, 255, 255, 0.006), 0 2px 4px 0 rgba(255, 255, 255, 0.006);
+  --duration-fast: 0.1s;
+  --duration-mid: 0.2s;
+  --duration-slow: 0.3s;
+  --ease-in-back: cubic-bezier(0.71, -0.46, 0.88, 0.6);
+  --ease-in-out: cubic-bezier(0.645, 0.045, 0.355, 1);
+  --ease-in-out-circ: cubic-bezier(0.78, 0.14, 0.15, 0.86);
+  --ease-in-quint: cubic-bezier(0.755, 0.05, 0.855, 0.06);
+  --ease-out: cubic-bezier(0.215, 0.61, 0.355, 1);
+  --ease-out-back: cubic-bezier(0.12, 0.4, 0.29, 1.46);
+  --ease-out-circ: cubic-bezier(0.08, 0.82, 0.17, 1);
+  --ease-out-quint: cubic-bezier(0.23, 1, 0.32, 1);
+  --motion-unit: 0.1;
+  --motion-base: 0;
+  --default-transition-duration: 0.2s;
+  --default-transition-timing-function: cubic-bezier(0.645, 0.045, 0.355, 1);
+  --radius-sm: 6px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+  --radius-xl: 14px;
+}
