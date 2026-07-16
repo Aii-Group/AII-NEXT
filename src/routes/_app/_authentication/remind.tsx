@@ -3,7 +3,6 @@ import { useTranslation } from 'react-i18next';
 import { LayoutWrapper } from '@/components/Wrapper';
 
 export const Route = createFileRoute('/_app/_authentication/remind')({
-  staticData: { hideSidebar: true },
   component: RouteComponent,
 });
 
