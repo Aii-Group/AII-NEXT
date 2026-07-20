@@ -1,7 +1,8 @@
-import type { ReactNode } from 'react';
-import { AuthProvider, type AuthSuccessPayload, createKeycloakConfigFromEnv } from '@asiainfo/auth';
+import { useEffect, type ReactNode } from 'react';
+import { AuthProvider, type AuthSuccessPayload, createKeycloakConfigFromEnv, getAppOrigin, useAuth } from '@asiainfo/auth';
 import { useUserStore } from '@/store/user/store';
 import { Spin } from 'antd';
+import { registerSessionLogoutHandler } from '@/fetch/session-expired';
 import { isAuthEnabled } from '@/utils/auth-guard';
 
 interface AppAuthProviderProps {
@@ -34,6 +35,23 @@ function handleAuthSuccess({ keycloak, profile }: AuthSuccessPayload) {
   });
 }
 
+/** 将 Keycloak logout 注册给请求层 401 处理，避免拦截器依赖 React Hook */
+function SessionLogoutBridge() {
+  const { enabled, logout } = useAuth();
+
+  useEffect(() => {
+    if (!enabled) return;
+
+    return registerSessionLogoutHandler(() =>
+      logout({
+        redirectUri: `${getAppOrigin()}/login`,
+      }),
+    );
+  }, [enabled, logout]);
+
+  return null;
+}
+
 export function AppAuthProvider({ children }: AppAuthProviderProps) {
   if (!isAuthEnabled) {
     return <AuthProvider enabled={false}>{children}</AuthProvider>;
@@ -54,6 +72,7 @@ export function AppAuthProvider({ children }: AppAuthProviderProps) {
       onAuthSuccess={handleAuthSuccess}
       onLogout={handleLogout}
     >
+      <SessionLogoutBridge />
       {children}
     </AuthProvider>
   );

@@ -35,7 +35,6 @@ function RowActionButton<RecordType extends object>({
   return (
     <Button
       type='text'
-      size='small'
       icon={action.icon}
       danger={action.danger}
       disabled={isRowActionDisabled(action, record, index)}
@@ -103,7 +102,6 @@ export function ActionCell<RecordType extends object>({
         >
           <Button
             type='text'
-            size='small'
             icon={<MoreOne />}
           />
         </Dropdown>

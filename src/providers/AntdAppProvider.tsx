@@ -19,7 +19,7 @@ function AntdAppGlobals() {
 
 export function AntdAppProvider({ children }: AntdAppProviderProps) {
   return (
-    <App>
+    <App message={{ maxCount: 2 }}>
       <AntdAppGlobals />
       {children}
     </App>

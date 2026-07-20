@@ -1,8 +1,9 @@
 import type { Icon } from '@icon-park/react/lib/runtime';
-import { BookOpen } from '@icon-park/react';
+import { BookOpen, People } from '@icon-park/react';
 
 const MENU_ICON_MAP: Record<string, Icon> = {
   'book-open': BookOpen,
+  people: People,
 };
 
 interface MenuIconProps {

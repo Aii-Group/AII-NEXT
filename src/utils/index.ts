@@ -28,6 +28,7 @@ export {
 
 export * from '@/utils/auth-guard';
 export * from '@/utils/classnames';
+export * from '@/utils/dayjs';
 export * from '@/utils/forbidden';
 export * from '@/utils/format';
 export * from '@/utils/function';

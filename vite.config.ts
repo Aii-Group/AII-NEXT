@@ -21,6 +21,11 @@ const vendorChunkGroups = [
     priority: 30,
   },
   {
+    name: 'vendor-dayjs',
+    test: /node_modules[\\/]dayjs([\\/]|$)/,
+    priority: 26,
+  },
+  {
     name: 'vendor-antd',
     test: /node_modules[\\/](antd|@ant-design|rc-)/,
     priority: 25,
@@ -66,9 +71,10 @@ export default defineConfig(({ command }) => {
       alias: {
         '@': path.resolve(__dirname, './src'),
       },
-      dedupe: ['react', 'react-dom'],
+      dedupe: ['react', 'react-dom', 'dayjs'],
     },
     optimizeDeps: {
+      include: ['dayjs'],
       exclude: ['@icon-park/react'],
     },
     build: {

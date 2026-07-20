@@ -17,6 +17,7 @@ import { Route as AppSystem403RouteImport } from './routes/_app/_system/403'
 import { Route as AppSystemSplatRouteImport } from './routes/_app/_system/$'
 import { Route as AppAuthenticationRemindRouteImport } from './routes/_app/_authentication/remind'
 import { Route as AppSystemIframeSlugRouteImport } from './routes/_app/_system/iframe/$slug'
+import { Route as AppAuthenticationDemoUsersRouteImport } from './routes/_app/_authentication/demo/users'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -56,6 +57,12 @@ const AppSystemIframeSlugRoute = AppSystemIframeSlugRouteImport.update({
   path: '/iframe/$slug',
   getParentRoute: () => AppRoute,
 } as any)
+const AppAuthenticationDemoUsersRoute =
+  AppAuthenticationDemoUsersRouteImport.update({
+    id: '/demo/users',
+    path: '/demo/users',
+    getParentRoute: () => AppAuthenticationRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AppSystemIndexRoute
@@ -63,6 +70,7 @@ export interface FileRoutesByFullPath {
   '/remind': typeof AppAuthenticationRemindRoute
   '/$': typeof AppSystemSplatRoute
   '/403': typeof AppSystem403Route
+  '/demo/users': typeof AppAuthenticationDemoUsersRoute
   '/iframe/$slug': typeof AppSystemIframeSlugRoute
 }
 export interface FileRoutesByTo {
@@ -71,6 +79,7 @@ export interface FileRoutesByTo {
   '/remind': typeof AppAuthenticationRemindRoute
   '/$': typeof AppSystemSplatRoute
   '/403': typeof AppSystem403Route
+  '/demo/users': typeof AppAuthenticationDemoUsersRoute
   '/iframe/$slug': typeof AppSystemIframeSlugRoute
 }
 export interface FileRoutesById {
@@ -82,13 +91,16 @@ export interface FileRoutesById {
   '/_app/_system/$': typeof AppSystemSplatRoute
   '/_app/_system/403': typeof AppSystem403Route
   '/_app/_system/': typeof AppSystemIndexRoute
+  '/_app/_authentication/demo/users': typeof AppAuthenticationDemoUsersRoute
   '/_app/_system/iframe/$slug': typeof AppSystemIframeSlugRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/login' | '/remind' | '/$' | '/403' | '/iframe/$slug'
+  fullPaths:
+    '/' | '/login' | '/remind' | '/$' | '/403' | '/demo/users' | '/iframe/$slug'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/' | '/remind' | '/$' | '/403' | '/iframe/$slug'
+  to:
+    '/login' | '/' | '/remind' | '/$' | '/403' | '/demo/users' | '/iframe/$slug'
   id:
     | '__root__'
     | '/_app'
@@ -98,6 +110,7 @@ export interface FileRouteTypes {
     | '/_app/_system/$'
     | '/_app/_system/403'
     | '/_app/_system/'
+    | '/_app/_authentication/demo/users'
     | '/_app/_system/iframe/$slug'
   fileRoutesById: FileRoutesById
 }
@@ -164,15 +177,24 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AppSystemIframeSlugRouteImport
       parentRoute: typeof AppRoute
     }
+    '/_app/_authentication/demo/users': {
+      id: '/_app/_authentication/demo/users'
+      path: '/demo/users'
+      fullPath: '/demo/users'
+      preLoaderRoute: typeof AppAuthenticationDemoUsersRouteImport
+      parentRoute: typeof AppAuthenticationRoute
+    }
   }
 }
 
 interface AppAuthenticationRouteChildren {
   AppAuthenticationRemindRoute: typeof AppAuthenticationRemindRoute
+  AppAuthenticationDemoUsersRoute: typeof AppAuthenticationDemoUsersRoute
 }
 
 const AppAuthenticationRouteChildren: AppAuthenticationRouteChildren = {
   AppAuthenticationRemindRoute: AppAuthenticationRemindRoute,
+  AppAuthenticationDemoUsersRoute: AppAuthenticationDemoUsersRoute,
 }
 
 const AppAuthenticationRouteWithChildren =

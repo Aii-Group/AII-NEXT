@@ -3,11 +3,14 @@ import { syncMicroAppPreferenceFromHost } from '@/hooks/use-micro-app-data';
 import { initTheme } from '@/layout/utils/theme';
 import { usePreferenceStore } from '@/store/preference/store';
 import { isMicroAppEnvironment } from '@/utils/micro';
+import { setDayjsLocale } from '@/utils/dayjs';
 import App from '@/App';
 import i18n from '@/i18n';
+import '@/utils/dayjs';
 import '@/index.css';
 
 initTheme(usePreferenceStore.getState().theme);
+setDayjsLocale(usePreferenceStore.getState().locale);
 void i18n.changeLanguage(usePreferenceStore.getState().locale);
 document.documentElement.lang = usePreferenceStore.getState().locale;
 

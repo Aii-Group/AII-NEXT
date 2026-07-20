@@ -9,7 +9,7 @@ import { isAuthEnabled } from '@/utils/auth-guard';
 
 export function UserButton() {
   const { t } = useTranslation('common');
-  const { user } = useUserStore();
+  const { user, clearUser } = useUserStore();
   const { logout } = useAuth();
   const navigate = useNavigate();
 
@@ -21,10 +21,12 @@ export function UserButton() {
       icon: <Logout />,
       onClick: () => {
         if (isAuthEnabled) {
-          logout();
-        } else {
-          void navigate({ to: '/login' });
+          void logout();
+          return;
         }
+
+        clearUser();
+        void navigate({ to: '/login' });
       },
     },
   ];

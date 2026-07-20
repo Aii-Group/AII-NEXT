@@ -1,8 +1,11 @@
 import { resolveAuthorizationHeader } from '@asiainfo/auth';
 import axios, { AxiosHeaders, type InternalAxiosRequestConfig } from 'axios';
+import { HttpStatus } from '@/constants/http-status';
 import { usePreferenceStore } from '@/store/preference/store';
 import { dispatchMicroErrorMessage, isMicroAppEnvironment } from '@/utils/micro';
+import { notifyStandaloneFetchError, runWithFetchErrorNotifyLimit } from './error-notify';
 import { normalizeRequestError } from './http-error';
+import { handleSessionExpired } from './session-expired';
 
 async function attachCommonHeaders(config: InternalAxiosRequestConfig) {
   const headers = AxiosHeaders.from(config.headers);
@@ -18,24 +21,34 @@ async function attachCommonHeaders(config: InternalAxiosRequestConfig) {
   return config;
 }
 
+function isUnauthorizedError(status: number | undefined) {
+  return status === HttpStatus.Unauthorized;
+}
+
 function rejectNormalizedError(error: unknown) {
   const normalizedError = normalizeRequestError(error);
+  const response = axios.isAxiosError(error) ? error.response : undefined;
+  const status = normalizedError.status ?? response?.status;
 
   if (isMicroAppEnvironment()) {
-    const response = axios.isAxiosError(error) ? error.response : undefined;
     const requestConfig = response?.config ?? (axios.isAxiosError(error) ? error.config : undefined);
     const responseData = readResponseErrorData(response?.data);
 
-    dispatchMicroErrorMessage({
-      status: response?.status,
-      errorCode: responseData?.code ?? normalizedError.code,
-      httpMethod: requestConfig?.method?.toUpperCase(),
-      rawUrl: requestConfig?.url,
-      placeholderMapping: readPlaceholderMapping(responseData?.args),
-      errorMsg: readErrorMessage(responseData) ?? normalizedError.message,
+    runWithFetchErrorNotifyLimit(() => {
+      dispatchMicroErrorMessage({
+        status,
+        errorCode: responseData?.code ?? normalizedError.code,
+        httpMethod: requestConfig?.method?.toUpperCase(),
+        rawUrl: requestConfig?.url,
+        placeholderMapping: readPlaceholderMapping(responseData?.args),
+        errorMsg: readErrorMessage(responseData) ?? normalizedError.message,
+      });
     });
+  } else if (isUnauthorizedError(status)) {
+    // 独立环境：清理会话并跳转登录，避免再弹通用错误 Toast
+    void handleSessionExpired();
   } else {
-    window.$message?.error(normalizedError.message);
+    notifyStandaloneFetchError(normalizedError.message);
   }
 
   return Promise.reject(normalizedError);

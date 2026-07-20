@@ -133,10 +133,33 @@ window.microApp.dispatch({
 | `placeholderMapping` | 响应体 `args` 对象                       |
 | `errorMsg`           | 响应体 `message` 或 `msg`                |
 
-宿主消息派发后，Promise 仍会 reject `RequestError`，因此业务逻辑可以继续执行清理、回滚或页面状态恢复。非微前端环境只会 reject 标准化错误，由调用方决定是否展示提示。
+宿主消息派发后，Promise 仍会 reject `RequestError`，因此业务逻辑可以继续执行清理、回滚或页面状态恢复。
 
 > [!NOTE]
 > 微前端标识存在但 `window.microApp` 尚未就绪时，会跳过宿主派发，不会用通信错误覆盖原始请求错误。
+
+### 独立应用环境
+
+非微前端环境下，拦截器会按状态码分流：
+
+| 状态  | 行为                                                                                                                                                                            |
+| ----- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `401` | 调用 `handleSessionExpired()`：清理 `useUserStore`、提示 `fetch:Http_401`、Keycloak 启用时走注册的 logout，否则跳转 `/login`。并发 401 去重，只处理一次；不再弹通用错误 Toast。 |
+| 其他  | 经 `notifyStandaloneFetchError` 限流后展示 `window.$message.error`，并 reject `RequestError`                                                                                    |
+
+`AppAuthProvider` 在 Keycloak 启用时通过 `registerSessionLogoutHandler` 将 `logout` 注入请求层，避免拦截器依赖 React Hook。
+
+业务侧仍会收到 reject 的 `RequestError`，可按需做局部清理；全局会话恢复由拦截器统一完成，页面内不必再手写跳转登录。
+
+### 错误提示限流
+
+独立环境 Toast 与微前端 `dispatchMicroErrorMessage` 共用 leading 限流（默认 2s，见 `FETCH_ERROR_NOTIFY_INTERVAL_MS`）：
+
+- 窗口内**首次**错误立即提示 / 派发
+- 窗口内后续错误**静默**（Promise 仍 reject）
+- 避免服务崩溃、网关不可用时页面或宿主连环报错
+
+`AntdAppProvider` 额外将 Message `maxCount` 设为 `2`，作为 UI 层兜底。
 
 ## 响应解包
 
@@ -147,11 +170,13 @@ window.microApp.dispatch({
 
 ## 模块结构
 
-| 文件                                                        | 职责                       |
-| ----------------------------------------------------------- | -------------------------- |
-| [`src/fetch/index.ts`](../src/fetch/index.ts)               | 导出公共拦截器和错误 API   |
-| [`src/fetch/interceptors.ts`](../src/fetch/interceptors.ts) | 通用请求头和响应错误拦截器 |
-| [`src/fetch/http-error.ts`](../src/fetch/http-error.ts)     | 请求错误类型和标准化逻辑   |
+| 文件                                                              | 职责                        |
+| ----------------------------------------------------------------- | --------------------------- |
+| [`src/fetch/index.ts`](../src/fetch/index.ts)                     | 导出公共拦截器和错误 API    |
+| [`src/fetch/interceptors.ts`](../src/fetch/interceptors.ts)       | 通用请求头和响应错误拦截器  |
+| [`src/fetch/http-error.ts`](../src/fetch/http-error.ts)           | 请求错误类型和标准化逻辑    |
+| [`src/fetch/error-notify.ts`](../src/fetch/error-notify.ts)       | 全局错误提示 leading 限流   |
+| [`src/fetch/session-expired.ts`](../src/fetch/session-expired.ts) | 独立环境 401 / 会话失效处理 |
 
 ## 开发检查
 

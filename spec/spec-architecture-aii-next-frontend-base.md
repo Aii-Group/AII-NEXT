@@ -1,22 +1,22 @@
 ---
 title: AII-NEXT 前端基座架构规范
-version: 1.0
+version: 1.1
 date_created: 2026-07-16
-last_updated: 2026-07-16
+last_updated: 2026-07-20
 owner: AII-NEXT 维护团队
 tags: [architecture, design, app, micro-frontend, react]
 ---
 
 # Introduction
 
-本规范定义 **AII-NEXT**（亚信 BSS 前端基座）的架构要求、运行模式、模块边界与集成契约。AII-NEXT 基于 React 19、Vite 8、Ant Design 6 与 TanStack Router，支持**独立应用**与 **micro-app 微前端子应用**两种运行形态，为业务管理系统提供统一的布局、鉴权、国际化、主题、请求与列表页开发模式。
+本规范定义 **AII-NEXT**（亚信 BSS 前端基座）的架构要求、运行模式、模块边界与集成契约。AII-NEXT 基于 React 19、Vite 8、Ant Design 6 与 TanStack Router，**主身份是 micro-app 微前端子应用（Child App）**：生产路径下由宿主提供门户壳、会话与偏好，子应用交付业务路由与领域 UI。独立运行模式是无宿主时的**开发 / 演示壳**，不是对等产品形态。
 
 ## 1. Purpose & Scope
 
 ### 目的
 
-- 为新建或迁移的 BSS 前端业务提供**可复用的工程基座**与**一致的开发约定**。
-- 明确独立运行与微前端嵌入两种模式下的行为差异与数据契约。
+- 为新建或迁移的 BSS 前端业务提供**可复用的子应用基座**与**一致的开发约定**。
+- 明确宿主（SoT）与子应用的职责边界，以及独立开发壳下的行为差异与数据契约。
 - 约束路由、鉴权、布局、API 调用、列表页、弹层等横切能力的实现方式，降低业务团队重复造轮子。
 
 ### 范围
@@ -43,24 +43,24 @@ tags: [architecture, design, app, micro-frontend, react]
 ### 假设
 
 - 运行环境为 Node.js 20+、pnpm 9+。
-- 独立开发模式下可访问内网 Keycloak 与后端网关。
+- 独立开发模式下可选配置内网 Keycloak（三项 env 齐全才启用）与后端网关。
 - 微前端模式下宿主已通过 `microApp.setGlobalData` 下发用户与偏好数据。
 
 ## 2. Definitions
 
-| 术语                               | 定义                                                                         |
-| ---------------------------------- | ---------------------------------------------------------------------------- |
-| **AII-NEXT**                       | 亚信 BSS 前端基座工程，本仓库所代表的 React 应用模板。                       |
-| **BSS**                            | Business Support System，业务支撑系统。                                      |
-| **Host / 宿主**                    | 通过 micro-app 加载子应用的主应用。                                          |
-| **Child App / 子应用**             | 被 micro-app 嵌入的 AII-NEXT 实例。                                          |
-| **Standalone Mode / 独立模式**     | 子应用不在 micro-app 环境中运行，具备完整布局与本地 Keycloak 鉴权。          |
-| **Micro Mode / 微前端模式**        | 检测到 `window.__MICRO_APP_ENVIRONMENT__` 为真时的运行形态。                 |
-| **App Shell / 布局壳**             | 由 `AppLayout`、`AppHeader`、`AppMenu` 等组成的应用级 UI 框架。              |
-| **File Route / 文件路由**          | 位于 `src/routes/` 下、由 TanStack Router 插件自动生成的路由定义。           |
-| **List Page Pattern / 列表页模式** | `AIISearch` + `useTable` + `AIITable` 的标准组合。                           |
-| **Preference**                     | 用户偏好：语言（locale）、主题（theme）、品牌色（brandColor）等。            |
-| **Swagger Client**                 | 由 `swagger-to-ts-axios` 根据 OpenAPI/Swagger 生成的 TypeScript API 客户端。 |
+| 术语                               | 定义                                                                                               |
+| ---------------------------------- | -------------------------------------------------------------------------------------------------- |
+| **AII-NEXT**                       | 亚信 BSS 前端基座工程，本仓库所代表的 React 应用模板。                                             |
+| **BSS**                            | Business Support System，业务支撑系统。                                                            |
+| **Host / 宿主**                    | 通过 micro-app 加载子应用的主应用。                                                                |
+| **Child App / 子应用**             | 被 micro-app 嵌入的 AII-NEXT 实例。                                                                |
+| **Standalone Mode / 独立模式**     | 子应用不在 micro-app 环境中运行时的开发 / 演示壳，具备完整布局与本地 Keycloak 鉴权；非生产主路径。 |
+| **Micro Mode / 微前端模式**        | 检测到 `window.__MICRO_APP_ENVIRONMENT__` 为真时的运行形态。                                       |
+| **App Shell / 布局壳**             | 由 `AppLayout`、`AppHeader`、`AppMenu` 等组成的应用级 UI 框架。                                    |
+| **File Route / 文件路由**          | 位于 `src/routes/` 下、由 TanStack Router 插件自动生成的路由定义。                                 |
+| **List Page Pattern / 列表页模式** | `AIISearch` + `useTable` + `AIITable` 的标准组合。                                                 |
+| **Preference**                     | 用户偏好：语言（locale）、主题（theme）、品牌色（brandColor）等。                                  |
+| **Swagger Client**                 | 由 `swagger-to-ts-axios` 根据 OpenAPI/Swagger 生成的 TypeScript API 客户端。                       |
 
 ## 3. Requirements, Constraints & Guidelines
 
@@ -73,7 +73,7 @@ tags: [architecture, design, app, micro-frontend, react]
 - **REQ-005**: 系统级页面（首页、403、iframe、通配 404）MUST 位于 `/_app/_system/*` 路由组。
 - **REQ-006**: 微前端模式下路由 `basepath` MUST 使用 `getMicroAppBaseRoute()`；独立模式 MUST 使用 `import.meta.env.BASE_URL`。
 - **REQ-007**: 全局 Provider 装配顺序 MUST 为：`ThemeRoot` → `I18nextProvider` → `AppAuthProvider` → `AntdProvider` → `AntdAppProvider` → `ModalProvider` → `DrawerProvider` → `IconParkProvider` → `RouterProvider`。
-- **REQ-008**: 用户状态 MUST 由 Zustand `useUserStore` 管理；偏好 MUST 由 `usePreferenceStore` 管理，并持久化至 `sessionStorage`。
+- **REQ-008**: 用户状态 MUST 由 Zustand `useUserStore` 管理；偏好 MUST 由 `usePreferenceStore` 管理。偏好与用户身份投影 MUST 持久化至 `sessionStorage`；Access Token MUST NOT 写入任何 Web Storage（见 COM-001），运行时 Token 由 `@asiainfo/auth` 或宿主 `globalData` 提供并缓存在内存态 `user.token`。
 - **REQ-009**: HTTP 请求 MUST 通过 `src/fetch` 提供的 `apiInterceptors` 统一注入 `Authorization` 与 `Accept-Language`。
 - **REQ-010**: 列表页 SHOULD 优先采用 `AIISearch` + `useTable` + `AIITable` 组合，不得重复实现分页/筛选/排序/行选择状态机。
 - **REQ-011**: 业务弹窗与抽屉 SHOULD 通过 `ModalProvider` / `DrawerProvider` 命令式 API 打开，避免在页面层散落大量 `useState` 控制可见性。
@@ -85,9 +85,11 @@ tags: [architecture, design, app, micro-frontend, react]
 
 - **SEC-001**: Access Token MUST 优先从 `useUserStore` 同步缓存读取，其次通过 `@asiainfo/auth` 的 `resolveAuthToken()` 解析，避免路由守卫中的异步瀑布。
 - **SEC-002**: 无有效 Token 时，受保护路由 MUST 重定向至 `/403`，不得静默放行。
-- **SEC-003**: 独立开发模式下 Keycloak MUST 使用 `login-required` 初始化策略；微前端模式或生产构建下本地 Keycloak MUST 默认关闭（`enabled={false}`），由宿主或网关接管鉴权。
+- **SEC-003**: 独立开发模式下，当且仅当 `VITE_KEYCLOAK_URL` / `VITE_KEYCLOAK_REALM` / `VITE_KEYCLOAK_CLIENT_ID` 均已配置时，本地 Keycloak MUST 启用并使用 `login-required`；三项任一缺失时 MUST 关闭本地鉴权（`isAuthEnabled=false`），不得因空配置抛错阻断启动。微前端模式或生产构建下本地 Keycloak MUST 关闭（`enabled={false}`），由宿主或网关接管鉴权。
 - **SEC-004**: 请求错误在微前端模式下 MUST 通过 `dispatchMicroErrorMessage` 交由宿主统一展示，子应用不得重复弹出全局错误 Toast（除非宿主未处理）。
 - **SEC-005**: 敏感配置（Keycloak URL、Client Secret 等）MUST 通过环境变量注入，不得提交至版本库；`.env` MUST 被 gitignore。
+- **SEC-006**: 独立应用环境下 API 返回 `401` 时 MUST 通过 `handleSessionExpired` 清理本地用户会话并引导重新登录（Keycloak 启用时调用注册的 logout，否则跳转 `/login`）；不得仅弹通用错误 Toast；并发 401 MUST 去重。微前端模式下 401 MUST 仍交由宿主处理，子应用不得本地跳转登录。
+- **SEC-007**: 请求错误的全局提示（独立环境 Toast / 微前端 `dispatchMicroErrorMessage`）MUST 做 leading 限流（默认 2s），避免服务不可用时短时间连环弹窗；限流不得吞掉 Promise reject。
 
 ### 布局与菜单
 
@@ -150,9 +152,11 @@ tags: [architecture, design, app, micro-frontend, react]
 
 ### 4.2 运行模式矩阵
 
+> 生产主路径为**微前端模式**；独立模式列描述的是开发 / 演示壳行为。
+
 | 能力                | 独立开发模式                    | 微前端模式                 | 独立生产构建         |
 | ------------------- | ------------------------------- | -------------------------- | -------------------- |
-| Keycloak 本地登录   | 启用                            | 禁用                       | 禁用                 |
+| Keycloak 本地登录   | 配置齐全时启用，否则关闭        | 禁用                       | 禁用                 |
 | AppHeader / AppMenu | 启用（菜单空则无侧栏）          | 禁用                       | 同独立               |
 | 路由 basepath       | `BASE_URL`                      | `__MICRO_APP_BASE_ROUTE__` | `BASE_URL`           |
 | 用户 Token 来源     | Keycloak + UserStore            | 宿主 globalData            | 网关/宿主            |
@@ -238,6 +242,8 @@ interface MenuOptions {
 
 **错误归一化**：所有失败响应 MUST 经 `normalizeRequestError` 转为统一错误对象后再 `reject`。
 
+**独立环境 401**：MUST 调用 `handleSessionExpired()`（见 SEC-006），由 `SessionLogoutBridge` 在 Keycloak 启用时注册 `registerSessionLogoutHandler`。
+
 ### 4.7 useTable 默认分页契约
 
 **请求（默认 fieldNames）**：
@@ -262,22 +268,24 @@ interface MenuOptions {
 
 ### 4.8 环境变量
 
-| 变量                      | 必填     | 说明                   |
-| ------------------------- | -------- | ---------------------- |
-| `VITE_APP_NAME_ZH`        | 是       | 中文应用名             |
-| `VITE_APP_NAME_EN`        | 是       | 英文应用名             |
-| `VITE_API_BASE_URL`       | 否       | API 基础路径，默认 `/` |
-| `VITE_KEYCLOAK_URL`       | 开发必填 | Keycloak 服务地址      |
-| `VITE_KEYCLOAK_REALM`     | 开发必填 | Realm                  |
-| `VITE_KEYCLOAK_CLIENT_ID` | 开发必填 | Client ID              |
+| 变量                      | 必填               | 说明                                                          |
+| ------------------------- | ------------------ | ------------------------------------------------------------- |
+| `VITE_APP_NAME_ZH`        | 是                 | 中文应用名                                                    |
+| `VITE_APP_NAME_EN`        | 是                 | 英文应用名                                                    |
+| `VITE_API_BASE_URL`       | 否                 | API 基础路径，默认 `/`                                        |
+| `VITE_KEYCLOAK_URL`       | 启用本地登录时必填 | Keycloak 服务地址；与 Realm、Client ID 同时配置才开启本地鉴权 |
+| `VITE_KEYCLOAK_REALM`     | 启用本地登录时必填 | Realm                                                         |
+| `VITE_KEYCLOAK_CLIENT_ID` | 启用本地登录时必填 | Client ID                                                     |
 
 ## 5. Acceptance Criteria
 
-- **AC-001**: Given 独立开发环境且 Keycloak 配置正确，When 访问 `/_app/_authentication` 下任意路由，Then 未登录用户被引导至 Keycloak 登录，登录成功后可访问业务页。
+- **AC-001**: Given 独立开发环境且 Keycloak 三项 env 已配置，When 访问 `/_app/_authentication` 下任意路由，Then 未登录用户被引导至 Keycloak 登录，登录成功后可访问业务页。
+- **AC-001a**: Given 独立开发环境且 Keycloak env 未配置，When 启动应用，Then 不抛 Keycloak 配置错误，且可访问示例业务页（本地鉴权关闭、守卫放行）。
 - **AC-002**: Given 用户无有效 Token，When `beforeLoad` 执行 `requireAuthToken()`，Then 重定向至 `/403`。
 - **AC-003**: Given 微前端环境（`__MICRO_APP_ENVIRONMENT__ === true`），When 应用挂载，Then 不渲染 Header/Sidebar，且 `window.mount`/`window.unmount` 可正常挂载卸载 React 树。
 - **AC-004**: Given 宿主通过 `setGlobalData` 下发 `userInfo.token` 与 `lang`，When 子应用 `useMicroAppData` 生效，Then `useUserStore` 与 `usePreferenceStore` 与宿主数据一致。
 - **AC-005**: Given 微前端模式下 API 返回 4xx/5xx，When 拦截器处理错误，Then 调用 `dispatchMicroErrorMessage` 且子应用不重复弹出全局错误。
+- **AC-005a**: Given 独立应用模式且 API 返回 401，When 拦截器处理错误，Then 清理 `useUserStore`、提示会话过期，并跳转 `/login`（或执行 Keycloak logout）；同一时间窗口内多次 401 仅触发一次恢复流程。
 - **AC-006**: Given `menu.ts` 导出空数组，When 独立模式渲染布局，Then 仅显示顶栏与内容区，无侧栏。
 - **AC-007**: Given 修改 `BrandSeed` 并执行 `theme:sync`，When 刷新页面，Then Ant Design 主色与 Tailwind CSS 变量同步更新。
 - **AC-008**: Given 标准列表 API，When 使用 `useTable(api.listX)` + `AIITable`，Then 首屏自动请求、分页切换触发新请求、过期响应被忽略。
@@ -303,7 +311,7 @@ interface MenuOptions {
 
 ## 7. Rationale & Context
 
-- **双模式基座**：BSS 系统既需独立部署演示/开发，又需嵌入统一门户；通过 `isMicroAppEnvironment()` 单一开关避免维护两套代码库。
+- **双模式基座（子应用为主）**：BSS 业务以嵌入统一门户为生产路径；独立模式仅用于本地开发与演示。通过 `isMicroAppEnvironment()` 单一开关裁剪壳与鉴权，避免维护两套代码库。宿主为用户 / 偏好 / 全局错误的 Source of Truth，子应用 store 为投影。
 - **路由层鉴权**：在 TanStack Router `beforeLoad` 守卫鉴权可阻止未授权页面的数据请求与闪烁，优于仅在组件 `useEffect` 中检查。
 - **列表页三位一体**：后台管理系统 70%+ 页面为列表 CRUD；统一 `AIISearch` + `useTable` + `AIITable` 可显著降低重复代码与分页 bug。
 - **Swagger 生成客户端**：保证前后端契约一致，减少手写类型漂移；拦截器集中处理横切 concern。
@@ -343,13 +351,15 @@ interface MenuOptions {
 
 ### Compliance Dependencies
 
-- **COM-001**: 企业内网安全策略 — Token 不得持久化至 localStorage（当前使用 sessionStorage 存偏好；Token 由 auth 库管理）；生产环境 HTTPS。
+- **COM-001**: 企业内网安全策略 — Access Token MUST NOT 持久化至 `localStorage` 或 `sessionStorage`（`useUserStore` persist 时 MUST 剥离 `token`；偏好与非敏感身份可存 `sessionStorage`；运行时 Token 由 auth 库或宿主下发）；生产环境 HTTPS。
 
 **Note**: 本章节描述架构依赖，不绑定具体 patch 版本；版本以 `package.json` 为准。
 
 ## 9. Examples & Edge Cases
 
 ### 9.1 新增受保护业务路由
+
+可参考内置示例页 `src/routes/_app/_authentication/demo/users.tsx`（侧栏「示例 → 示例用户」）。
 
 ```typescript
 // src/routes/_app/_authentication/orders/index.tsx
@@ -416,12 +426,16 @@ if (!isMicroAppEnvironment()) {
 - [ ] 列表页是否复用 `useTable` / `AIITable` 而非自建分页逻辑
 - [ ] 微前端相关逻辑是否经 `utils/micro` 与 `useMicroAppData` 统一处理
 - [ ] 品牌/主题变更是否走 `BrandSeed` + `theme:sync`
+- [ ] `useUserStore` persist 是否剥离 `token`，且未将 Token 写入 Web Storage
+- [ ] 独立开发 `isAuthEnabled` 是否为 `!(micro || PROD) && hasKeycloakEnv()`，空 Keycloak 配置时不得启动报错
 - [ ] `pnpm typecheck` 与 `pnpm build` 是否通过
 - [ ] 是否无 `.env` 或密钥文件被提交
 
 ## 11. Related Specifications / Further Reading
 
 - [AII-NEXT README](../README.md) — 项目概览、快速开始、环境变量
+- [列表页开发规范（查询展示与 CRUD）](./spec-process-crud-list-page.md) — 列表页能力档位、只读展示与完整 CRUD 约定
+- [国际化文案规范](./spec-process-i18n-locale.md) — 文案文件归属、扁平 Key、复用与公共/独有决策
 - [AIITable 组件文档](../readme/AIITable.md)
 - [AIISearch 组件文档](../readme/AIISearch.md)
 - [useTable Hook 文档](../readme/useTable.md)

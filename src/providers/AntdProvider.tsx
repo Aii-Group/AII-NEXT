@@ -2,24 +2,17 @@ import { useEffect, useMemo, type ReactNode } from 'react';
 import { ConfigProvider, theme } from 'antd';
 import enUS from 'antd/locale/en_US';
 import zhCN from 'antd/locale/zh_CN';
-import dayjs from 'dayjs';
-import 'dayjs/locale/en';
-import 'dayjs/locale/zh-cn';
 import { DEFAULT_LOCALE, Locale, Theme } from '@/constants';
 import { useResolvedTheme } from '@/layout/utils/theme';
 import { antdThemeConfig } from '@/theme/antd-theme';
 import { usePreferenceStore } from '@/store/preference/store';
+import { setDayjsLocale } from '@/utils/dayjs';
 
 const { defaultAlgorithm, darkAlgorithm } = theme;
 
 const antdLocales = {
   [Locale.ZhCN]: zhCN,
   [Locale.EnUS]: enUS,
-} as const;
-
-const dayjsLocales = {
-  [Locale.ZhCN]: 'zh-cn',
-  [Locale.EnUS]: 'en',
 } as const;
 
 interface AntdProviderProps {
@@ -33,7 +26,7 @@ export function AntdProvider({ children }: AntdProviderProps) {
   const antdLocale = antdLocales[locale] ?? antdLocales[DEFAULT_LOCALE];
 
   useEffect(() => {
-    dayjs.locale(dayjsLocales[locale] ?? dayjsLocales[DEFAULT_LOCALE]);
+    setDayjsLocale(locale);
   }, [locale]);
 
   const themeConfig = useMemo(

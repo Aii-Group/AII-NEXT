@@ -40,4 +40,4 @@ export const ACTION_COLUMN_KEY = '__aii_action__';
 
 export const DEFAULT_MAX_VISIBLE_ROW_ACTIONS = 2;
 
-export const DEFAULT_ACTION_COLUMN_WIDTH = 160;
+export const DEFAULT_ACTION_COLUMN_WIDTH = 180;

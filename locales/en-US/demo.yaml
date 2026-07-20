@@ -1,0 +1,33 @@
+Users:
+  Page_Title: Demo Users
+  Page_Description: A sample list page using AIISearch + useTable + AIITable + ModalProvider. Data is local mock and needs no backend.
+  Toolbar_Hint: Local mock data; memory state resets on full page reload
+  Name: Name
+  Name_Placeholder: Enter name
+  Name_Required: Name is required
+  Email: Email
+  Email_Placeholder: Enter email
+  Email_Required: Email is required
+  Email_Invalid: Enter a valid email
+  Department: Department
+  Department_Placeholder: Enter department
+  Department_Required: Department is required
+  Status: Status
+  Status_Placeholder: Select status
+  Status_Required: Status is required
+  Enabled: Enabled
+  Disabled: Disabled
+  Created_At: Created at
+  Create_Title: Create user
+  Edit_Title: Edit user
+  Create_Success: Created successfully
+  Update_Success: Updated successfully
+  Delete_Success: Deleted successfully
+  Delete_Confirm_Title: Delete this user?
+  Delete_Confirm_Content: 'User "{{name}}" will be deleted. This cannot be undone.'
+  Batch_Delete_Confirm_Title: Delete selected users?
+  Batch_Delete_Confirm_Content: '{{count}} selected users will be deleted. This cannot be undone.'
+  Reset_Seed: Reset data
+  Reset_Confirm_Title: Reset demo data?
+  Reset_Confirm_Content: Restore the seed users and discard local create/update/delete changes.
+  Reset_Success: Demo data has been reset

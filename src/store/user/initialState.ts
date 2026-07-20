@@ -6,8 +6,15 @@ export interface UserState {
   user: User | null;
 }
 
-const hydrated = readPersistedState<Pick<UserState, 'user'>>(USER_STORAGE_KEY, 'local');
+function stripPersistedToken(user: User | null | undefined): User | null {
+  if (!user) return null;
+  const safeUser = { ...user };
+  delete safeUser.token;
+  return safeUser;
+}
+
+const hydrated = readPersistedState<Pick<UserState, 'user'>>(USER_STORAGE_KEY, 'session');
 
 export const initialUserState: UserState = {
-  user: hydrated?.user ?? null,
+  user: stripPersistedToken(hydrated?.user),
 };

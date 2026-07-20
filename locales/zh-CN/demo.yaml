@@ -1,0 +1,33 @@
+Users:
+  Page_Title: 示例用户
+  Page_Description: 演示 AIISearch + useTable + AIITable + ModalProvider 的标准列表页组合，数据为本地 Mock，无需后端。
+  Toolbar_Hint: 本地 Mock 数据，刷新页面会重置内存状态
+  Name: 姓名
+  Name_Placeholder: 请输入姓名
+  Name_Required: 请输入姓名
+  Email: 邮箱
+  Email_Placeholder: 请输入邮箱
+  Email_Required: 请输入邮箱
+  Email_Invalid: 请输入有效邮箱
+  Department: 部门
+  Department_Placeholder: 请输入部门
+  Department_Required: 请输入部门
+  Status: 状态
+  Status_Placeholder: 请选择状态
+  Status_Required: 请选择状态
+  Enabled: 启用
+  Disabled: 停用
+  Created_At: 创建时间
+  Create_Title: 新建用户
+  Edit_Title: 编辑用户
+  Create_Success: 创建成功
+  Update_Success: 更新成功
+  Delete_Success: 删除成功
+  Delete_Confirm_Title: 确认删除？
+  Delete_Confirm_Content: '将删除用户「{{name}}」，此操作不可撤销。'
+  Batch_Delete_Confirm_Title: 确认批量删除？
+  Batch_Delete_Confirm_Content: '将删除已选的 {{count}} 个用户，此操作不可撤销。'
+  Reset_Seed: 重置数据
+  Reset_Confirm_Title: 重置示例数据？
+  Reset_Confirm_Content: 将恢复为初始种子用户，当前增删改会被清空。
+  Reset_Success: 已重置示例数据
