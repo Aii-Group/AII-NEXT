@@ -1,0 +1,41 @@
+{
+  "version": 1.1,
+  "atDirectives": [
+    {
+      "name": "@apply",
+      "description": "Tailwind CSS: inline utility classes"
+    },
+    {
+      "name": "@config",
+      "description": "Tailwind CSS: legacy config file path"
+    },
+    {
+      "name": "@custom-variant",
+      "description": "Tailwind CSS: define a custom variant"
+    },
+    {
+      "name": "@layer",
+      "description": "Tailwind CSS: cascade layer (base, components, utilities)"
+    },
+    {
+      "name": "@plugin",
+      "description": "Tailwind CSS: load a plugin"
+    },
+    {
+      "name": "@source",
+      "description": "Tailwind CSS: content source paths"
+    },
+    {
+      "name": "@theme",
+      "description": "Tailwind CSS: design tokens and theme configuration"
+    },
+    {
+      "name": "@utility",
+      "description": "Tailwind CSS: define a custom utility"
+    },
+    {
+      "name": "@variant",
+      "description": "Tailwind CSS: define a variant"
+    }
+  ]
+}
