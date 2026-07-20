@@ -154,11 +154,13 @@ export function SelectableTable({ dataSource }: { dataSource: TableRow[] }) {
     {
       key: 'export',
       label: '导出',
+      permission: 'user:export',
       onClick: (keys, rows) => console.log(keys, rows),
     },
     {
       key: 'delete',
       label: '删除',
+      permission: 'user:delete',
       danger: true,
       disabled: (_keys, rows) => rows.some((row) => row.status === 'enabled'),
       onClick: async (keys) => {
@@ -169,7 +171,7 @@ export function SelectableTable({ dataSource }: { dataSource: TableRow[] }) {
 />
 ```
 
-设置 `selectionAlert={false}` 可隐藏提示栏，但不会关闭行选择。提示栏中的“取消选择”会触发当前 `rowSelection.onChange` 或 `onSelectionChange`。
+设置 `selectionAlert={false}` 可隐藏提示栏，但不会关闭行选择。提示栏中的“取消选择”会触发当前 `rowSelection.onChange` 或 `onSelectionChange`。批量操作同样支持 `permission` 字段。
 
 ## 行操作
 
@@ -183,12 +185,14 @@ export function SelectableTable({ dataSource }: { dataSource: TableRow[] }) {
     {
       key: 'edit',
       label: '编辑',
+      permission: 'user:edit',
       hidden: (record) => record.status === 'disabled',
       onClick: (record) => openEditor(record.id),
     },
     {
       key: 'delete',
       label: '删除',
+      permission: 'user:delete',
       danger: true,
       disabled: (record) => record.status === 'enabled',
       onClick: (record) => api.remove(record.id),
@@ -202,7 +206,7 @@ export function SelectableTable({ dataSource }: { dataSource: TableRow[] }) {
 />
 ```
 
-操作列默认宽度为 `160`、居中对齐、固定在右侧，最多直接显示两个操作。`hidden` 和 `disabled` 均支持布尔值或基于当前行的判断函数。
+操作列默认宽度为 `160`、居中对齐、固定在右侧，最多直接显示两个操作。`hidden` 和 `disabled` 均支持布尔值或基于当前行的判断函数。配置 `permission`（对应宿主 `menuCode`）后，无权限的操作会自动隐藏，详见 [Access](./Access.md)。
 
 完全自定义操作列：
 
@@ -278,7 +282,7 @@ import { Plus } from '@icon-park/react';
 />
 ```
 
-工具栏操作支持 `icon`、`type`、`danger`、`disabled` 和 `hidden`。配置对象的 `className` 作用于工具栏容器；顶层 `toolbarClassName` 也可追加容器样式。
+工具栏操作支持 `icon`、`type`、`danger`、`disabled`、`hidden` 和 `permission`。配置对象的 `className` 作用于工具栏容器；顶层 `toolbarClassName` 也可追加容器样式。
 
 ## 外观与原生能力
 

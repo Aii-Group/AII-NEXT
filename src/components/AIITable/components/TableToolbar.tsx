@@ -3,7 +3,10 @@ import { Button, Dropdown } from 'antd';
 import type { MenuProps } from 'antd';
 import { Down } from '@icon-park/react';
 import { useTranslation } from 'react-i18next';
+import type { PermissionsButton } from '@/store/user/types';
+import { useUserStore } from '@/store/user/store';
 import { cn } from '@/utils/classnames';
+import { isPermissionAllowed } from '@/utils/permission';
 import type { AIITableToolbar, AIITableToolbarAction, AIITableToolbarConfig } from '../types';
 
 function isToolbarAction(value: unknown): value is AIITableToolbarAction {
@@ -28,9 +31,12 @@ function isToolbarNodeArray(toolbar: AIITableToolbar): toolbar is ReactNode[] {
   return Array.isArray(toolbar) && (toolbar.length === 0 || !isToolbarAction(toolbar[0]));
 }
 
-function ToolbarActionButton({ action }: { action: AIITableToolbarAction }) {
-  if (action.hidden) return null;
+function isToolbarActionVisible(action: AIITableToolbarAction, permissionsButton: PermissionsButton[] | undefined) {
+  if (!isPermissionAllowed(action.permission, permissionsButton)) return false;
+  return !action.hidden;
+}
 
+function ToolbarActionButton({ action }: { action: AIITableToolbarAction }) {
   return (
     <Button
       type={action.type ?? 'text'}
@@ -46,8 +52,12 @@ function ToolbarActionButton({ action }: { action: AIITableToolbarAction }) {
 
 function ToolbarActions({ actions, maxVisible }: { actions: AIITableToolbarAction[]; maxVisible?: number }) {
   const { t } = useTranslation('common');
+  const permissionsButton = useUserStore((state) => state.user?.permissionsButton);
 
-  const visibleActions = useMemo(() => actions.filter((action) => !action.hidden), [actions]);
+  const visibleActions = useMemo(
+    () => actions.filter((action) => isToolbarActionVisible(action, permissionsButton)),
+    [actions, permissionsButton],
+  );
 
   const inlineLimit = maxVisible ?? visibleActions.length;
   const inlineActions = visibleActions.slice(0, inlineLimit);

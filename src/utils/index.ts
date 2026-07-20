@@ -31,6 +31,7 @@ export * from '@/utils/classnames';
 export * from '@/utils/forbidden';
 export * from '@/utils/format';
 export * from '@/utils/function';
+export * from '@/utils/permission';
 export * from '@/utils/storage';
 export * from '@/utils/type-guard';
 export * from '@/utils/url';

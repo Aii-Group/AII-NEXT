@@ -2,6 +2,9 @@ import { useMemo } from 'react';
 import { Button, Dropdown } from 'antd';
 import type { MenuProps } from 'antd';
 import { MoreOne } from '@icon-park/react';
+import type { PermissionsButton } from '@/store/user/types';
+import { useUserStore } from '@/store/user/store';
+import { isPermissionAllowed } from '@/utils/permission';
 import type { AIITableRowAction } from '../types';
 
 const DEFAULT_MAX_VISIBLE = 2;
@@ -10,7 +13,13 @@ function isRowActionDisabled<RecordType extends object>(action: AIITableRowActio
   return typeof action.disabled === 'function' ? action.disabled(record, index) : action.disabled;
 }
 
-function isRowActionHidden<RecordType extends object>(action: AIITableRowAction<RecordType>, record: RecordType, index: number) {
+function isRowActionHidden<RecordType extends object>(
+  action: AIITableRowAction<RecordType>,
+  record: RecordType,
+  index: number,
+  permissionsButton: PermissionsButton[] | undefined,
+) {
+  if (!isPermissionAllowed(action.permission, permissionsButton)) return true;
   return typeof action.hidden === 'function' ? action.hidden(record, index) : action.hidden;
 }
 
@@ -50,7 +59,12 @@ export function ActionCell<RecordType extends object>({
   index,
   maxVisible = DEFAULT_MAX_VISIBLE,
 }: ActionCellProps<RecordType>) {
-  const visibleActions = useMemo(() => actions.filter((action) => !isRowActionHidden(action, record, index)), [actions, index, record]);
+  const permissionsButton = useUserStore((state) => state.user?.permissionsButton);
+
+  const visibleActions = useMemo(
+    () => actions.filter((action) => !isRowActionHidden(action, record, index, permissionsButton)),
+    [actions, index, permissionsButton, record],
+  );
 
   const shouldCollapse = visibleActions.length > maxVisible;
   const inlineActions = shouldCollapse ? [] : visibleActions;
@@ -58,7 +72,7 @@ export function ActionCell<RecordType extends object>({
 
   const dropdownMenuItems = useMemo<MenuProps['items']>(
     () =>
-      dropdownActions.map((action) => ({
+      (shouldCollapse ? visibleActions : []).map((action) => ({
         key: action.key,
         label: action.label,
         icon: action.icon,
@@ -66,7 +80,7 @@ export function ActionCell<RecordType extends object>({
         disabled: isRowActionDisabled(action, record, index),
         onClick: () => action.onClick(record, index),
       })),
-    [dropdownActions, index, record],
+    [index, record, shouldCollapse, visibleActions],
   );
 
   if (visibleActions.length === 0) return null;

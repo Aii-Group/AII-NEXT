@@ -100,9 +100,12 @@ tags: [architecture, design, app, micro-frontend, react]
 ### 微前端集成
 
 - **MIC-001**: 子应用 MUST 在挂载时调用 `syncMicroAppPreferenceFromHost()`，并在运行时通过 `useMicroAppData()` 监听宿主全局数据变更。
-- **MIC-002**: 宿主下发的 `MicroAppGlobalData` MUST 映射至本地 `useUserStore` 与 `usePreferenceStore`（用户身份、语言、主题、品牌色、按钮权限）。
+- **MIC-002**: 宿主下发的 `MicroAppGlobalData` MUST 映射至本地 `useUserStore` 与 `usePreferenceStore`（用户身份、语言、主题、品牌色、按钮权限）。宿主局部更新未携带 `permissionsButton` 时 MUST 保留本地已有权限列表。
 - **MIC-003**: 子应用向宿主发送的错误消息 MUST 使用 `{ type: 'showErrorMessage', params, errorMsg }` 结构。
 - **MIC-004**: 微前端环境下品牌色 MUST 以宿主下发的 `brandColor` 为准；独立环境下品牌色 MUST 以本地 `BrandSeed` 为准。
+- **ACL-001**: 按钮级权限 MUST 通过 `PermissionsButton.menuCode` 匹配；业务 SHOULD 使用 `Access` / `useAccess` / `hasPermission`，不得在页面内重复实现权限比对。
+- **ACL-002**: 当 `user.permissionsButton` 为 `undefined` 时，ACL MUST 视为未启用并放行；当其为数组（含空数组）时 MUST 按列表鉴权。
+- **ACL-003**: `AIITable` 的 `toolbar` / `rowActions` / `batchActions` 若配置 `permission`，无权限时 MUST 隐藏对应操作。
 
 ### 约束
 
@@ -192,7 +195,7 @@ type MicroAppGlobalData = {
 | `lang` / `userInfo.locale` | `preference.locale`      | 经 `normalizeLang` 归一化                           |
 | `theme`                    | `preference.theme`       | 经 `resolveHostTheme` 解析                          |
 | `brandColor`               | `preference.brandColor`  | 仅微前端模式应用                                    |
-| `permissionsButton`        | `user.permissionsButton` | 按钮级权限                                          |
+| `permissionsButton`        | `user.permissionsButton` | 按钮级权限；未携带该字段时保留本地已有列表          |
 
 ### 4.4 子应用 → 宿主错误消息
 
@@ -424,5 +427,6 @@ if (!isMicroAppEnvironment()) {
 - [useTable Hook 文档](../readme/useTable.md)
 - [Fetch / 拦截器文档](../readme/Fetch.md)
 - [ModalProvider 文档](../readme/ModalProvider.md)
+- [Access 按钮权限文档](../readme/Access.md)
 - [micro-app 官方文档](https://jd-opensource.github.io/micro-app/docs.html)
 - [TanStack Router 文件路由](https://tanstack.com/router/latest/docs/framework/react/routing/file-based-routing)

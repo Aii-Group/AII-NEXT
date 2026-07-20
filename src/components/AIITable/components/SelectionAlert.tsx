@@ -4,7 +4,9 @@ import type { MenuProps } from 'antd';
 import type { Key } from 'antd/es/table/interface';
 import { Down } from '@icon-park/react';
 import { useTranslation } from 'react-i18next';
+import { useUserStore } from '@/store/user/store';
 import { cn } from '@/utils/classnames';
+import { isPermissionAllowed } from '@/utils/permission';
 import type { AIITableBatchAction } from '../types';
 
 const MAX_VISIBLE_ACTIONS = 2;
@@ -59,9 +61,15 @@ export function SelectionAlert<RecordType extends object>({
   className,
 }: SelectionAlertProps<RecordType>) {
   const { t } = useTranslation('common');
+  const permissionsButton = useUserStore((state) => state.user?.permissionsButton);
 
-  const visibleActions = actions.slice(0, MAX_VISIBLE_ACTIONS);
-  const overflowActions = actions.slice(MAX_VISIBLE_ACTIONS);
+  const permittedActions = useMemo(
+    () => actions.filter((action) => isPermissionAllowed(action.permission, permissionsButton)),
+    [actions, permissionsButton],
+  );
+
+  const visibleActions = permittedActions.slice(0, MAX_VISIBLE_ACTIONS);
+  const overflowActions = permittedActions.slice(MAX_VISIBLE_ACTIONS);
 
   const overflowMenuItems = useMemo<MenuProps['items']>(
     () =>
@@ -90,7 +98,7 @@ export function SelectionAlert<RecordType extends object>({
         {extra}
       </div>
 
-      {actions.length > 0 ? (
+      {permittedActions.length > 0 ? (
         <div className='flex flex-wrap items-center'>
           {visibleActions.map((action) => (
             <BatchActionButton

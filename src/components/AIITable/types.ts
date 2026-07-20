@@ -17,6 +17,8 @@ export interface AIITableBatchAction<RecordType extends object = object> {
   label: ReactNode;
   icon?: ReactNode;
   danger?: boolean;
+  /** 按钮权限码（`PermissionsButton.menuCode`），无权限时隐藏 */
+  permission?: string;
   disabled?: boolean | ((selectedRowKeys: Key[], selectedRows: RecordType[]) => boolean);
   onClick: (selectedRowKeys: Key[], selectedRows: RecordType[]) => void | Promise<void>;
 }
@@ -26,6 +28,8 @@ export interface AIITableRowAction<RecordType extends object = object> {
   label: ReactNode;
   icon?: ReactNode;
   danger?: boolean;
+  /** 按钮权限码（`PermissionsButton.menuCode`），无权限时隐藏 */
+  permission?: string;
   hidden?: boolean | ((record: RecordType, index: number) => boolean);
   disabled?: boolean | ((record: RecordType, index: number) => boolean);
   onClick: (record: RecordType, index: number) => void | Promise<void>;
@@ -61,6 +65,8 @@ export interface AIITableToolbarAction {
   danger?: boolean;
   disabled?: boolean;
   hidden?: boolean;
+  /** 按钮权限码（`PermissionsButton.menuCode`），无权限时隐藏 */
+  permission?: string;
   onClick: () => void | Promise<void>;
 }
 

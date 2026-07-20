@@ -60,7 +60,8 @@ export function applyMicroAppGlobalData(data: MicroAppGlobalData) {
     setUser({
       ...userInfo,
       locale: resolveHostLocale(data) ?? userInfo?.locale ?? data.lang,
-      permissionsButton: data.permissionsButton,
+      // 宿主未携带该字段时保留本地已有权限，避免局部更新清空 ACL
+      permissionsButton: 'permissionsButton' in data ? data.permissionsButton : useUserStore.getState().user?.permissionsButton,
     });
   } else if (userInfo) {
     clearUser();
