@@ -34,6 +34,8 @@ function rejectNormalizedError(error: unknown) {
       placeholderMapping: readPlaceholderMapping(responseData?.args),
       errorMsg: readErrorMessage(responseData) ?? normalizedError.message,
     });
+  } else {
+    window.$message?.error(normalizedError.message);
   }
 
   return Promise.reject(normalizedError);
