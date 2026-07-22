@@ -6,7 +6,6 @@ import { isMicroAppEnvironment } from '@/utils/micro';
 import { setDayjsLocale } from '@/utils/dayjs';
 import App from '@/App';
 import i18n from '@/i18n';
-import '@/utils/dayjs';
 import '@/index.css';
 
 initTheme(usePreferenceStore.getState().theme);

@@ -36,6 +36,8 @@ export const DEFAULT_SCROLL = {
 
 export const DEFAULT_ROW_KEY = 'id' as const;
 
+export const EMPTY_BATCH_ACTIONS: never[] = [];
+
 export const ACTION_COLUMN_KEY = '__aii_action__';
 
 export const DEFAULT_MAX_VISIBLE_ROW_ACTIONS = 2;

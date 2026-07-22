@@ -6,7 +6,7 @@ import { cn } from '@/utils/classnames';
 import { LayoutWrapper } from '@/components/Wrapper';
 import { SelectionAlert } from './components/SelectionAlert';
 import { TableToolbar } from './components/TableToolbar';
-import { DEFAULT_ROW_KEY, DEFAULT_SCROLL } from './constants';
+import { DEFAULT_ROW_KEY, DEFAULT_SCROLL, EMPTY_BATCH_ACTIONS } from './constants';
 import { getSelectedRows } from './utils/getSelectedRows';
 import { mergeColumns } from './utils/mergeColumns';
 import { mergePagination } from './utils/mergePagination';
@@ -140,20 +140,32 @@ function AIITableInner<RecordType extends object = object>(
     onChange?.([], [], { type: 'none' });
   }, [onSelectionChange, rowSelection?.onChange]);
 
-  const batchActionItems = batchActions ?? [];
+  const batchActionItems = batchActions ?? EMPTY_BATCH_ACTIONS;
 
   const mergedColumns = useMemo(() => mergeColumns(columns, rowActions, actionColumn, t), [actionColumn, columns, rowActions, t]);
 
-  const selectionAlertNode = showSelectionAlert ? (
-    <SelectionAlert
-      selectedRowKeys={selectedRowKeys ?? []}
-      selectedRows={selectedRows}
-      onClear={handleClearSelection}
-      actions={batchActionItems}
-      extra={selectionAlertConfig?.extra}
-      className={selectionAlertConfig?.className}
-    />
-  ) : null;
+  const selectionAlertNode = useMemo(() => {
+    if (!showSelectionAlert) return null;
+
+    return (
+      <SelectionAlert
+        selectedRowKeys={selectedRowKeys ?? []}
+        selectedRows={selectedRows}
+        onClear={handleClearSelection}
+        actions={batchActionItems}
+        extra={selectionAlertConfig?.extra}
+        className={selectionAlertConfig?.className}
+      />
+    );
+  }, [
+    batchActionItems,
+    handleClearSelection,
+    selectedRowKeys,
+    selectedRows,
+    selectionAlertConfig?.className,
+    selectionAlertConfig?.extra,
+    showSelectionAlert,
+  ]);
 
   const tableColSpan = useMemo(
     () =>

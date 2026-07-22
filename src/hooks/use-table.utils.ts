@@ -186,7 +186,7 @@ export function buildRequestPayload<Params extends Record<string, unknown> = Rec
   const { current, pageSize, extraParams } = params;
 
   return {
-    ...(extraParams ?? {}),
+    ...extraParams,
     [resolved.request.current]: current,
     [resolved.request.pageSize]: pageSize,
   };

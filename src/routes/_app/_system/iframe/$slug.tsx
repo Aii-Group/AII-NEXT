@@ -27,6 +27,8 @@ function IframePage() {
       title={t(label, { ns: 'menu' })}
       className='h-[calc(100dvh-5rem)] w-full border-0 bg-card'
       referrerPolicy='no-referrer'
+      // 内嵌业务页需脚本；去掉 allow-same-origin 以满足 sandbox 安全约束
+      sandbox='allow-scripts allow-forms allow-popups allow-downloads allow-modals'
     />
   );
 }

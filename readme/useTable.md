@@ -432,6 +432,6 @@ function UserListPage() {
 
 ```bash
 pnpm typecheck
-pnpm exec eslint src/hooks/use-table.ts src/hooks/use-table.utils.ts
-pnpm exec prettier --check src/hooks/use-table.ts src/hooks/use-table.utils.ts readme/useTable.md
+pnpm exec oxlint --deny-warnings src/hooks/use-table.ts src/hooks/use-table.utils.ts
+pnpm exec oxfmt --check src/hooks/use-table.ts src/hooks/use-table.utils.ts readme/useTable.md
 ```

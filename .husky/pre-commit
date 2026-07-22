@@ -8,4 +8,19 @@ if echo "$staged" | grep -E '(^|/)\.env$|(^|/)\.env\.local$|(^|/)\.env\.[^/]+\.l
   exit 1
 fi
 
-pnpm exec lint-staged
+echo "→ lint-staged（oxlint + oxfmt）"
+pnpm exec lint-staged || exit 1
+
+# 类型检查覆盖整个项目；仅改文档 / 纯配置时可跳过以加快提交
+if echo "$staged" | grep -E '\.(ts|tsx|mts|cts|js|jsx|mjs|cjs)$|(^|/)tsconfig.*\.json$' >/dev/null 2>&1; then
+  echo "→ typecheck"
+  pnpm typecheck || exit 1
+fi
+
+echo "→ lint（全量，deny-warnings）"
+pnpm lint || exit 1
+
+echo "→ format:check"
+pnpm format:check || exit 1
+
+echo "✅ pre-commit 校验通过"

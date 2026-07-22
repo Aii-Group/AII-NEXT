@@ -182,6 +182,6 @@ window.microApp.dispatch({
 
 ```bash
 pnpm typecheck
-pnpm exec eslint src/fetch src/utils/micro.ts
-pnpm exec prettier --check src/fetch src/utils/micro.ts readme/Fetch.md
+pnpm exec oxlint --deny-warnings src/fetch src/utils/micro.ts
+pnpm exec oxfmt --check src/fetch src/utils/micro.ts readme/Fetch.md
 ```

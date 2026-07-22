@@ -240,7 +240,7 @@ modal.setLoading(false);
 
 ```bash
 pnpm typecheck
-pnpm exec eslint src/providers/ModalProvider.tsx src/hooks/use-modal.ts src/contexts/modal-context.ts src/types/modal.ts
+pnpm exec oxlint --deny-warnings src/providers/ModalProvider.tsx src/hooks/use-modal.ts src/contexts/modal-context.ts src/types/modal.ts
 pnpm exec antd lint src/providers/ModalProvider.tsx --format json
-pnpm exec prettier --check readme/ModalProvider.md
+pnpm exec oxfmt --check readme/ModalProvider.md
 ```

@@ -348,6 +348,6 @@ import { Plus } from '@icon-park/react';
 
 ```bash
 pnpm typecheck
-pnpm exec eslint src/components/AIITable
-pnpm exec prettier --check src/components/AIITable readme/AIITable.md
+pnpm exec oxlint --deny-warnings src/components/AIITable
+pnpm exec oxfmt --check src/components/AIITable readme/AIITable.md
 ```

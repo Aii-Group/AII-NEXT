@@ -1,4 +1,4 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { useMemo, type MouseEvent } from 'react';
 import { International, Moon, Sun } from '@icon-park/react';
 import { Button, Checkbox, Dropdown, Form, Input, Tooltip, type MenuProps } from 'antd';
@@ -7,7 +7,6 @@ import Logo from '@/assets/asiainfo-logo.png';
 import { LOCALE_LABELS, SUPPORTED_LOCALES, Theme, type Locale } from '@/constants';
 import { useThemeMode } from '@/layout/utils/theme';
 import { usePreferenceStore } from '@/store/preference/store';
-import { useNavigate } from '@tanstack/react-router';
 
 export const Route = createFileRoute('/login')({
   component: RouteComponent,
@@ -50,7 +49,7 @@ function RouteComponent() {
   };
 
   const handleSubmit = (values: LoginFormValues) => {
-    console.log(values);
+    console.warn(values);
     navigate({ to: '/' });
   };
 
@@ -111,7 +110,7 @@ function RouteComponent() {
 
       <main className='grid min-h-0 place-items-center bg-[#fcfcf9] bg-[radial-gradient(circle_at_center,rgba(252,252,249,0.9)_0,rgba(252,252,249,0.9)_14%,transparent_44%),radial-gradient(circle,rgba(11,11,11,0.14)_0.75px,transparent_0.9px)] bg-size-[100%_100%,16px_16px] bg-position-[center,center] [background-repeat:no-repeat,repeat] px-6 pt-10 pb-14 max-sm:items-start max-sm:px-5 max-sm:pt-14 max-sm:pb-10 dark:bg-[#101114] dark:bg-[radial-gradient(circle_at_center,rgba(16,17,20,0.84)_0,rgba(16,17,20,0.84)_14%,transparent_44%),radial-gradient(circle,rgba(255,255,255,0.1)_0.75px,transparent_0.9px)] [@media(max-height:640px)_and_(min-width:641px)]:items-start [@media(max-height:640px)_and_(min-width:641px)]:py-8'>
         <section
-          className='w-full max-w-[448px]'
+          className='w-full max-w-md'
           aria-labelledby='login-title'
         >
           <div className='mb-8 text-center'>
@@ -121,7 +120,7 @@ function RouteComponent() {
             >
               {t('Login.Title')}
             </h1>
-            <p className='mx-auto mt-2.5 mb-0 max-w-[420px] text-sm leading-[21px] text-[#66645f] dark:text-[#9da1aa]'>
+            <p className='mx-auto mt-2.5 mb-0 max-w-105 text-sm leading-5.25 text-[#66645f] dark:text-[#9da1aa]'>
               {t('Login.Description')}
             </p>
           </div>
@@ -144,7 +143,6 @@ function RouteComponent() {
               <Input
                 autoComplete='username'
                 placeholder={t('Login.Username_Placeholder')}
-                autoFocus
               />
             </Form.Item>
 

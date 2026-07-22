@@ -124,7 +124,7 @@ function runCircleReveal(transition: ViewTransition, toDark: boolean, origin?: T
   try {
     activeCircleAnimation = document.documentElement.animate(
       {
-        clipPath: toDark ? clipPath : [...clipPath].reverse(),
+        clipPath: toDark ? clipPath : [clipPath[1], clipPath[0]],
       },
       {
         duration: THEME_TRANSITION_MS,
@@ -180,6 +180,7 @@ export function applyThemeWithTransition(theme: ThemeMode, origin?: ThemeTransit
   void transition.ready
     .then(() => {
       runCircleReveal(transition, toDark, origin);
+      return undefined;
     })
     .catch(() => {
       // ready 被拒绝（跳过/中断）时不启动圆形动画

@@ -340,3 +340,11 @@ import DefaultAIISearch, {
 
 > [!NOTE]
 > 该组件是 AII-NEXT 的内部组件，默认依赖项目中的 Ant Design、Tailwind CSS、i18next、IconPark、Motion、路由上下文和 `LayoutWrapper`。在项目外复用时，需要同时迁移这些运行环境或替换对应的内部依赖。
+
+## 开发检查
+
+```bash
+pnpm typecheck
+pnpm exec oxlint --deny-warnings src/components/AIISearch
+pnpm exec oxfmt --check src/components/AIISearch readme/AIISearch.md
+```

@@ -1,5 +1,4 @@
-import type { TableProps } from 'antd';
-import type { ButtonProps } from 'antd';
+import type { TableProps, ButtonProps } from 'antd';
 import type { ColumnType } from 'antd/es/table';
 import type { Key, RowSelectMethod, TableRowSelection } from 'antd/es/table/interface';
 import type { ReactNode } from 'react';

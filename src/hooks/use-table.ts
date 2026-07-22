@@ -310,7 +310,7 @@ export function useTable<
   const refresh = useCallback(async () => {
     if (!isRemote || !ready) return;
     await fetchData({ current: pagination.current, pageSize: pagination.pageSize });
-  }, [fetchData, isRemote, pagination.current, pagination.pageSize, ready]);
+  }, [fetchData, isRemote, pagination, ready]);
 
   const reset = useCallback(async () => {
     if (!isRemote || !ready) return;
@@ -366,7 +366,7 @@ export function useTable<
     if (!isRemote || manual || !ready) return;
     void fetchData({ current: defaultCurrent, pageSize: defaultPageSize });
     // refreshDeps intentionally drives re-fetch
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // oxlint-disable-next-line react/exhaustive-deps
   }, [isRemote, manual, ready, defaultCurrent, defaultPageSize, ...refreshDeps]);
 
   useEffect(() => {

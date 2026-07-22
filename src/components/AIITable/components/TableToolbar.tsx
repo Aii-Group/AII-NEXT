@@ -135,7 +135,14 @@ function renderToolbarContent(toolbar: AIITableToolbar): ReactNode {
   }
 
   if (isToolbarNodeArray(toolbar)) {
-    return toolbar.map((item, index) => <Fragment key={index}>{item}</Fragment>);
+    return toolbar.map((item, index) => {
+      if (isValidElement(item) && item.key != null) {
+        return <Fragment key={String(item.key)}>{item}</Fragment>;
+      }
+
+      // oxlint-disable-next-line react/no-array-index-key -- ReactNode 列表无稳定业务 key
+      return <Fragment key={`toolbar-node-${index}`}>{item}</Fragment>;
+    });
   }
 
   return toolbar;

@@ -1,7 +1,6 @@
 import { useNavigate } from '@tanstack/react-router';
-import { Button } from 'antd';
+import { Button, Result } from 'antd';
 import { useTranslation } from 'react-i18next';
-import { Result } from 'antd';
 import NotFoundSvg from '@/assets/404.svg';
 
 export function DefaultNotFound() {

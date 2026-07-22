@@ -321,6 +321,7 @@ content={t('Orders.Delete_Confirm_Content', { orderNo })}
 
 - [AII-NEXT 前端基座架构规范](./spec-architecture-aii-next-frontend-base.md)
 - [列表页开发规范（查询展示与 CRUD）](./spec-process-crud-list-page.md)
+- [代码质量与提交校验规范](./spec-process-lint-format-commit.md)
 - [AII-NEXT README](../README.md)
 - 参考：`locales/zh-CN/common.yaml`、`locales/zh-CN/demo.yaml`
 - 加载实现：`src/i18n/resources.ts`

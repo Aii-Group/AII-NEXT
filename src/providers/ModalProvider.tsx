@@ -81,6 +81,7 @@ export function ModalProvider({ children }: ModalProviderProps) {
         .then(
           () => {
             if (instanceIdRef.current === instanceId) close();
+            return undefined;
           },
           () => undefined,
         )

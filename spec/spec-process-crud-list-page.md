@@ -525,6 +525,7 @@ window.$modal.confirm({
 
 - [AII-NEXT 前端基座架构规范](./spec-architecture-aii-next-frontend-base.md)
 - [国际化文案规范](./spec-process-i18n-locale.md)
+- [代码质量与提交校验规范](./spec-process-lint-format-commit.md)
 - [AIITable 组件文档](../readme/AIITable.md)
 - [AIISearch 组件文档](../readme/AIISearch.md)
 - [useTable Hook 文档](../readme/useTable.md)

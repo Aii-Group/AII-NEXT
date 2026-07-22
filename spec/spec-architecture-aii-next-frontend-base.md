@@ -2,7 +2,7 @@
 title: AII-NEXT 前端基座架构规范
 version: 1.1
 date_created: 2026-07-16
-last_updated: 2026-07-20
+last_updated: 2026-07-22
 owner: AII-NEXT 维护团队
 tags: [architecture, design, app, micro-frontend, react]
 ---
@@ -428,14 +428,16 @@ if (!isMicroAppEnvironment()) {
 - [ ] 品牌/主题变更是否走 `BrandSeed` + `theme:sync`
 - [ ] `useUserStore` persist 是否剥离 `token`，且未将 Token 写入 Web Storage
 - [ ] 独立开发 `isAuthEnabled` 是否为 `!(micro || PROD) && hasKeycloakEnv()`，空 Keycloak 配置时不得启动报错
-- [ ] `pnpm typecheck` 与 `pnpm build` 是否通过
+- [ ] `pnpm typecheck`、`pnpm lint`、`pnpm format:check`（或 `pnpm validate`）是否通过
 - [ ] 是否无 `.env` 或密钥文件被提交
+- [ ] 提交是否经过 Husky pre-commit / commit-msg（未无故跳过 hooks）
 
 ## 11. Related Specifications / Further Reading
 
 - [AII-NEXT README](../README.md) — 项目概览、快速开始、环境变量
 - [列表页开发规范（查询展示与 CRUD）](./spec-process-crud-list-page.md) — 列表页能力档位、只读展示与完整 CRUD 约定
 - [国际化文案规范](./spec-process-i18n-locale.md) — 文案文件归属、扁平 Key、复用与公共/独有决策
+- [代码质量与提交校验规范](./spec-process-lint-format-commit.md) — Oxlint / Oxfmt、Husky 门禁、Commitlint
 - [AIITable 组件文档](../readme/AIITable.md)
 - [AIISearch 组件文档](../readme/AIISearch.md)
 - [useTable Hook 文档](../readme/useTable.md)

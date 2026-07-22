@@ -152,3 +152,11 @@ useUserStore.getState().updateUser({ permissionsButton: undefined });
 | `can(code, mode?)` | 校验权限       |
 | `canAny(codes)`    | 命中任一       |
 | `canAll(codes)`    | 需全部具备     |
+
+## 开发检查
+
+```bash
+pnpm typecheck
+pnpm exec oxlint --deny-warnings src/components/Access
+pnpm exec oxfmt --check src/components/Access readme/Access.md
+```

@@ -92,12 +92,20 @@ pnpm preview
 | `pnpm build`                        | 同步主题、类型检查并构建                               |
 | `pnpm preview`                      | 预览生产构建                                           |
 | `pnpm typecheck`                    | 仅执行 TypeScript 项目引用检查                         |
-| `pnpm lint`                         | ESLint                                                 |
-| `pnpm format` / `pnpm format:check` | Prettier 格式化 / 检查                                 |
+| `pnpm lint`                         | Oxlint 检查（warning 视为失败）                        |
+| `pnpm format` / `pnpm format:check` | Oxfmt 格式化 / 检查                                    |
+| `pnpm validate`                     | 提交前同款全量校验：typecheck + lint + format:check    |
 | `pnpm theme:sync`                   | 根据 `BrandSeed` 生成 Ant Design ↔ Tailwind 主题产物   |
 | `pnpm swagger-g`                    | 按 `api.swagger.config.ts` 生成 API 客户端到 `src/api` |
 
 修改品牌色时，编辑 `src/constants/brand.ts` 中的 `BrandSeed`，再执行 `pnpm theme:sync`（或直接 `pnpm dev` / `pnpm build`）。
+
+提交前质量门禁摘要（完整要求见 [代码质量与提交校验规范](./spec/spec-process-lint-format-commit.md)）：
+
+- 配置：`.oxlintrc.json`、`.oxfmtrc.json`、`commitlint.config.mjs`
+- Hook：`.husky/pre-commit`（敏感文件 → lint-staged → 条件 typecheck → 全量 lint → format:check）、`.husky/commit-msg`
+- 手动全量：`pnpm validate`
+- 编辑器：推荐 Oxc 扩展（`.vscode` 已配置）
 
 ## 项目结构
 
@@ -121,6 +129,8 @@ pnpm preview
 │   ├── store/               # Zustand（user / preference）
 │   ├── theme/               # Ant Design 主题与 token 生成
 │   └── utils/               # 鉴权守卫、微前端、dayjs 等工具
+├── .oxlintrc.json           # Oxlint 规则配置
+├── .oxfmtrc.json            # Oxfmt 格式化配置
 ├── api.swagger.config.ts    # swagger-to-ts-axios 配置
 └── vite.config.ts           # 开发代理、分包与别名（@ → src）
 ```
@@ -139,6 +149,9 @@ pnpm preview
 | [前端基座架构规范](./spec/spec-architecture-aii-next-frontend-base.md) | 子应用边界、双模式矩阵、宿主契约、安全与验收 |
 | [列表页开发规范](./spec/spec-process-crud-list-page.md)                | 查询展示与 CRUD 档位、`features/` 目录约定   |
 | [国际化文案规范](./spec/spec-process-i18n-locale.md)                   | 文案文件归属、扁平 Key、公共 / 独有决策      |
+| [代码质量与提交校验规范](./spec/spec-process-lint-format-commit.md)    | Oxlint / Oxfmt、Husky 门禁、Commitlint       |
+
+Lint / Format 的权威约定见上述「代码质量与提交校验规范」；下文「常用脚本」仅作命令速查。
 
 ## 组件文档
 
@@ -172,6 +185,7 @@ import { useTable } from '@/hooks/use-table';
 - **鉴权**：Keycloak（`keycloak-js` + `@asiainfo/auth`）
 - **国际化**：i18next、react-i18next
 - **微前端**：京东 micro-app（`window.mount` / `window.unmount`）
+- **工程化**：Oxlint、Oxfmt、Husky、lint-staged、Commitlint
 
 ## FAQ
 

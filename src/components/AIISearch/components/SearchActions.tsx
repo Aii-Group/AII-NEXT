@@ -1,10 +1,9 @@
 import { memo, useCallback, type ReactNode } from 'react';
 import { Button, Form, Space } from 'antd';
-import { Down } from '@icon-park/react';
+import { Down, Search, Clear } from '@icon-park/react';
 import { useTranslation } from 'react-i18next';
 import { cn } from '@/utils/classnames';
 import type { AIISearchActionRenderContext } from '../types';
-import { Search, Clear } from '@icon-park/react';
 
 export interface SearchActionsProps {
   ctx: AIISearchActionRenderContext;

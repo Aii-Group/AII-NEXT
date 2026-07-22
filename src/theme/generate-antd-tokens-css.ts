@@ -1,9 +1,8 @@
 import { writeFileSync } from 'node:fs';
 import path from 'node:path';
-import { fileURLToPath } from 'node:url';
 import { antdDarkTokens, antdLightTokens } from './antd-theme.ts';
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
+const __dirname = import.meta.dirname;
 
 type AntdTokens = typeof antdLightTokens;
 
