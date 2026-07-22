@@ -124,6 +124,10 @@ Login:
   Username_Label: Username
   Username_Placeholder: Enter your username
   Password_Placeholder: Enter your password
+  Captcha_Label: Captcha
+  Captcha_Placeholder: Enter captcha
+  Captcha_Image: Captcha image
+  Captcha_Refresh: Click to refresh captcha
   Remember_Me: Remember me
   Continue: Continue
   Copyright: '© {{year}} AsiaInfo. All rights reserved.'

@@ -15,6 +15,7 @@ export const Route = createFileRoute('/login')({
 interface LoginFormValues {
   username: string;
   password: string;
+  captcha: string;
   remember?: boolean;
 }
 
@@ -34,7 +35,7 @@ function RouteComponent() {
     [],
   );
 
-  const appName = (locale === 'en-US' ? import.meta.env.VITE_APP_NAME_EN : import.meta.env.VITE_APP_NAME_ZH)?.trim() || 'BSS';
+  const appName = (locale === 'en-US' ? import.meta.env.VITE_APP_NAME_EN : import.meta.env.VITE_APP_NAME_ZH)?.trim() || 'ASIAINFO';
 
   const handleLocaleChange: MenuProps['onClick'] = ({ key }) => {
     setLocale(key as Locale);
@@ -139,6 +140,7 @@ function RouteComponent() {
               name='username'
               label={t('Login.Username_Label')}
               rules={[{ required: true }]}
+              className='mb-3!'
             >
               <Input
                 autoComplete='username'
@@ -150,6 +152,7 @@ function RouteComponent() {
               name='password'
               label={t('Fields.Password')}
               rules={[{ required: true }]}
+              className='mb-3!'
             >
               <Input.Password
                 autoComplete='current-password'
@@ -158,11 +161,39 @@ function RouteComponent() {
             </Form.Item>
 
             <Form.Item
+              label={t('Login.Captcha_Label')}
+              required
+              className='mb-3!'
+            >
+              <div className='flex gap-3'>
+                <Form.Item
+                  name='captcha'
+                  noStyle
+                  rules={[{ required: true }]}
+                >
+                  <Input
+                    autoComplete='off'
+                    placeholder={t('Login.Captcha_Placeholder')}
+                  />
+                </Form.Item>
+                <button
+                  type='button'
+                  aria-label={t('Login.Captcha_Refresh')}
+                  className='m-0 w-28 shrink-0 cursor-pointer self-stretch overflow-hidden rounded-lg border border-black/10 bg-[#eceae4] p-0 dark:border-white/10 dark:bg-[#2a2d33]'
+                >
+                  <span className='flex size-full items-center justify-center text-xs text-[#66645f] dark:text-[#9da1aa]'>
+                    {t('Login.Captcha_Image')}
+                  </span>
+                </button>
+              </div>
+            </Form.Item>
+
+            <Form.Item
               name='remember'
               valuePropName='checked'
               className='mb-3!'
             >
-              <Checkbox className='text-[13px] text-[#66645f] dark:text-[#9da1aa]'>{t('Login.Remember_Me')}</Checkbox>
+              <Checkbox>{t('Login.Remember_Me')}</Checkbox>
             </Form.Item>
 
             <Form.Item className='mb-0!'>

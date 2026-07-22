@@ -124,6 +124,10 @@ Login:
   Username_Label: 用户名
   Username_Placeholder: 请输入用户名
   Password_Placeholder: 请输入密码
+  Captcha_Label: 验证码
+  Captcha_Placeholder: 请输入验证码
+  Captcha_Image: 验证码图片
+  Captcha_Refresh: 点击刷新验证码
   Remember_Me: 记住我
   Continue: 继续登录
   Copyright: '© {{year}} 亚信国际. 保留所有权利。'
