@@ -36,7 +36,7 @@ function resetHandlingLock() {
 
 /**
  * 独立应用环境下处理 401 / Token 失效：
- * 清理本地用户、提示、Keycloak 登出或跳转 `/login`。
+ * 清理本地用户、提示、可选 Keycloak 登出，并跳转 `/login`。
  * 微前端环境交由宿主处理，此处直接返回。
  * 并发 401 会去重，只执行一次。
  */
@@ -52,9 +52,13 @@ export async function handleSessionExpired() {
     const message = i18n.t('Http_401', { ns: 'fetch' });
     window.$message?.warning(message);
 
+    // Keycloak 登出通常会硬跳转；失败或未离页时仍兜底到应用登录页
     if (logoutHandler) {
-      await logoutHandler();
-      return;
+      try {
+        await logoutHandler();
+      } catch (error) {
+        console.error('[session] logout handler failed', error);
+      }
     }
 
     const location = router.state.location;

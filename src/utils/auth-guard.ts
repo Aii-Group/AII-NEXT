@@ -25,19 +25,30 @@ export async function resolveAccessToken() {
   return (await resolveAuthToken()) ?? undefined;
 }
 
+function matchesPath(pathname: string, path: string) {
+  return pathname === path || pathname.endsWith(path);
+}
+
+/** 无需 token 即可访问，避免根守卫与跳转目标互相重定向 */
+function isPublicAuthPath(pathname: string) {
+  return matchesPath(pathname, '/login') || matchesPath(pathname, '/403');
+}
+
 /**
- * 无 token 时跳转 403，供受保护路由的 beforeLoad 使用。
- * 本地关闭 Keycloak 且非微前端时放行，便于示例页与无 IdP 联调。
+ * 无 token 时拦截，挂在根路由 beforeLoad，覆盖全部业务路由。
+ * - 非微前端：跳转 `/login`
+ * - 微前端：跳转 `/403`（登录由宿主接管）
+ * - `/login`、`/403` 放行，避免死循环
  */
-export async function requireAuthToken() {
-  if (!isAuthEnabled && !isMicroAppEnvironment()) {
-    return useUserStore.getState().user?.token;
+export async function requireAuthToken(pathname: string) {
+  if (isPublicAuthPath(pathname)) {
+    return;
   }
 
   const token = await resolveAccessToken();
 
   if (!token) {
-    throw redirect({ to: '/403' });
+    throw redirect({ to: isMicroAppEnvironment() ? '/403' : '/login' });
   }
 
   return token;

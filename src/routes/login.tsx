@@ -1,12 +1,10 @@
 import { createFileRoute, useNavigate } from '@tanstack/react-router';
-import { useMemo, type MouseEvent } from 'react';
-import { International, Moon, Sun } from '@icon-park/react';
-import { Button, Checkbox, Dropdown, Form, Input, Tooltip, type MenuProps } from 'antd';
+import { Button, Checkbox, Form, Input } from 'antd';
 import { useTranslation } from 'react-i18next';
 import Logo from '@/assets/asiainfo-logo.png';
-import { LOCALE_LABELS, SUPPORTED_LOCALES, Theme, type Locale } from '@/constants';
-import { useThemeMode } from '@/layout/utils/theme';
+import { LocaleButton, ThemeToggleButton } from '@/layout/component';
 import { usePreferenceStore } from '@/store/preference/store';
+import { useUserStore } from '@/store/user/store';
 
 export const Route = createFileRoute('/login')({
   component: RouteComponent,
@@ -22,36 +20,18 @@ interface LoginFormValues {
 function RouteComponent() {
   const { t } = useTranslation('common');
   const locale = usePreferenceStore((state) => state.locale);
-  const setLocale = usePreferenceStore((state) => state.setLocale);
-  const { resolvedTheme, toggleTheme } = useThemeMode();
   const navigate = useNavigate();
-
-  const localeItems = useMemo<MenuProps['items']>(
-    () =>
-      SUPPORTED_LOCALES.map((item) => ({
-        key: item,
-        label: LOCALE_LABELS[item],
-      })),
-    [],
-  );
 
   const appName = (locale === 'en-US' ? import.meta.env.VITE_APP_NAME_EN : import.meta.env.VITE_APP_NAME_ZH)?.trim() || 'ASIAINFO';
 
-  const handleLocaleChange: MenuProps['onClick'] = ({ key }) => {
-    setLocale(key as Locale);
-  };
-
-  const handleThemeChange = (event: MouseEvent<HTMLElement>) => {
-    const rect = event.currentTarget.getBoundingClientRect();
-    toggleTheme({
-      x: rect.left + rect.width / 2,
-      y: rect.top + rect.height / 2,
-    });
-  };
-
   const handleSubmit = (values: LoginFormValues) => {
-    console.warn(values);
-    navigate({ to: '/' });
+    // 独立环境无 Keycloak 时写入内存态 token，供 requireAuthToken 放行
+    useUserStore.getState().setUser({
+      userName: values.username,
+      userIdStr: values.username,
+      token: crypto.randomUUID(),
+    });
+    void navigate({ to: '/' });
   };
 
   return (
@@ -76,35 +56,8 @@ function RouteComponent() {
             className='flex shrink-0 items-center gap-0.5'
             aria-label={t('Login.Preferences')}
           >
-            <Dropdown
-              trigger={['click']}
-              placement='bottomRight'
-              menu={{
-                items: localeItems,
-                selectable: true,
-                selectedKeys: [locale],
-                onClick: handleLocaleChange,
-              }}
-            >
-              <Tooltip title={t('Header.Locale')}>
-                <Button
-                  type='text'
-                  shape='circle'
-                  aria-label={t('Header.Locale')}
-                  icon={<International />}
-                />
-              </Tooltip>
-            </Dropdown>
-
-            <Tooltip title={t('Header.Theme')}>
-              <Button
-                type='text'
-                shape='circle'
-                aria-label={t('Header.Theme')}
-                icon={resolvedTheme === Theme.Dark ? <Moon /> : <Sun />}
-                onClick={handleThemeChange}
-              />
-            </Tooltip>
+            <LocaleButton />
+            <ThemeToggleButton />
           </nav>
         </div>
       </header>
