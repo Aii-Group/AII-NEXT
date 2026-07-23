@@ -25,7 +25,7 @@ function RouteComponent() {
   const appName = (locale === 'en-US' ? import.meta.env.VITE_APP_NAME_EN : import.meta.env.VITE_APP_NAME_ZH)?.trim() || 'ASIAINFO';
 
   const handleSubmit = (values: LoginFormValues) => {
-    // 独立环境无 Keycloak 时写入内存态 token，供 requireAuthToken 放行
+    // 独立环境无 Keycloak：写入并持久化 token，供 requireAuthToken 在刷新后放行
     useUserStore.getState().setUser({
       userName: values.username,
       userIdStr: values.username,
