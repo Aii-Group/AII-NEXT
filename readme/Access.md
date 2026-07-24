@@ -153,6 +153,11 @@ useUserStore.getState().updateUser({ permissionsButton: undefined });
 | `canAny(codes)`    | 命中任一       |
 | `canAll(codes)`    | 需全部具备     |
 
+## 相关文档
+
+- [`AIITable`](./AIITable.md)：`permission` 字段与操作隐藏
+- [前端基座架构规范](../spec/spec-architecture-aii-next-frontend-base.md) — ACL 条款
+
 ## 开发检查
 
 ```bash

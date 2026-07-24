@@ -144,27 +144,29 @@ pnpm preview
 
 ## 规范
 
-| 文档                                                                   | 内容                                         |
-| ---------------------------------------------------------------------- | -------------------------------------------- |
-| [前端基座架构规范](./spec/spec-architecture-aii-next-frontend-base.md) | 子应用边界、双模式矩阵、宿主契约、安全与验收 |
-| [列表页开发规范](./spec/spec-process-crud-list-page.md)                | 查询展示与 CRUD 档位、`features/` 目录约定   |
-| [国际化文案规范](./spec/spec-process-i18n-locale.md)                   | 文案文件归属、扁平 Key、公共 / 独有决策      |
-| [代码质量与提交校验规范](./spec/spec-process-lint-format-commit.md)    | Oxlint / Oxfmt、Husky 门禁、Commitlint       |
+| 文档                                                                   | 内容                                                              |
+| ---------------------------------------------------------------------- | ----------------------------------------------------------------- |
+| [前端基座架构规范](./spec/spec-architecture-aii-next-frontend-base.md) | 子应用边界、双模式矩阵、宿主契约、安全与验收                      |
+| [列表页三位一体设计规范](./spec/spec-design-list-page-trinity.md)      | `AIISearch` / `useTable` / `AIITable` 契约与 selectionType opt-in |
+| [列表页开发规范](./spec/spec-process-crud-list-page.md)                | 查询展示与 CRUD 档位、`features/` 目录约定                        |
+| [国际化文案规范](./spec/spec-process-i18n-locale.md)                   | 文案文件归属、扁平 Key、公共 / 独有决策                           |
+| [代码质量与提交校验规范](./spec/spec-process-lint-format-commit.md)    | Oxlint / Oxfmt、Husky 门禁、Commitlint                            |
 
 Lint / Format 的权威约定见上述「代码质量与提交校验规范」；下文「常用脚本」仅作命令速查。
 
 ## 组件文档
 
-| 文档                                       | 内容                                            |
-| ------------------------------------------ | ----------------------------------------------- |
-| [AIITable](./readme/AIITable.md)           | 业务表格封装：分页、固定表头、行选择、操作列    |
-| [AIISearch](./readme/AIISearch.md)         | 响应式搜索表单：栅格、展开收起、查询重置        |
-| [useTable](./readme/useTable.md)           | 列表请求适配：分页 / 筛选 / 排序 / 行选择       |
-| [Fetch](./readme/Fetch.md)                 | 生成客户端的拦截器与错误处理约定                |
-| [ModalProvider](./readme/ModalProvider.md) | 命令式业务弹窗：`open` / `close` / 提交 loading |
-| [Access](./readme/Access.md)               | 按钮级权限：`Access` / `useAccess` / 表格集成   |
+| 文档                                         | 内容                                             |
+| -------------------------------------------- | ------------------------------------------------ |
+| [AIITable](./readme/AIITable.md)             | 业务表格封装：分页、固定表头、行选择、操作列     |
+| [AIISearch](./readme/AIISearch.md)           | 响应式搜索表单：栅格、展开收起、查询重置         |
+| [useTable](./readme/useTable.md)             | 列表请求适配：分页 / 筛选 / 排序 / 行选择 opt-in |
+| [Fetch](./readme/Fetch.md)                   | 生成客户端的拦截器与错误处理约定                 |
+| [ModalProvider](./readme/ModalProvider.md)   | 命令式业务弹窗：`open` / `close` / 提交 loading  |
+| [DrawerProvider](./readme/DrawerProvider.md) | 命令式业务抽屉：`window.$drawer`、默认可调宽     |
+| [Access](./readme/Access.md)                 | 按钮级权限：`Access` / `useAccess` / 表格集成    |
 
-侧栏「示例 → 示例用户」对应路由 `/demo/users`，完整演示列表页三件套与弹窗 CRUD（本地 Mock，无需后端）。
+侧栏「示例 → 示例用户」对应路由 `/demo/users`，完整演示列表页三件套与弹窗 CRUD（本地 Mock，无需后端）。需要行选择时须向 `useTable` 显式传入 `selectionType`（如 `'checkbox'`）。
 
 典型列表页组合：
 
@@ -174,6 +176,7 @@ import { AIITable } from '@/components/AIITable';
 import { useTable } from '@/hooks/use-table';
 
 // AIISearch 负责查询条件 → useTable 请求与状态 → AIITable 展示
+// 批量勾选：useTable(api, { selectionType: 'checkbox', params: query })
 ```
 
 ## 技术栈
@@ -203,7 +206,11 @@ import { useTable } from '@/hooks/use-table';
 
 **如何查看示例业务页？**
 
-本地启动后打开侧栏「示例 → 示例用户」，或访问 `/demo/users`。该页使用本地 Mock 数据，演示查询、分页、行选择、弹窗新建/编辑与删除。
+本地启动后打开侧栏「示例 → 示例用户」，或访问 `/demo/users`。该页使用本地 Mock 数据，演示查询、分页、行选择（`selectionType: 'checkbox'`）、弹窗新建/编辑与删除。
+
+**列表页如何启用行选择？**
+
+向 `useTable` 显式传入 `selectionType: 'checkbox'`（或 `'radio'`）。未传时默认不出现选择列；详见 [useTable](./readme/useTable.md) 与 [列表页三位一体设计规范](./spec/spec-design-list-page-trinity.md)。
 
 **如何接入后端 API？**
 

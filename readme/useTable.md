@@ -17,7 +17,7 @@
 - 支持自定义请求体和响应归一化
 - 忽略过期请求结果，避免后返回的旧请求覆盖新数据
 - 支持手动请求、就绪条件和依赖变化刷新
-- 统一管理受控行选择和选中行数据
+- 统一管理受控行选择和选中行数据（`selectionType` 显式 opt-in）
 - 无接口时可管理本地静态数据
 - 根据接口返回值和字段映射推导行类型
 
@@ -274,7 +274,9 @@ const { tableProps } = useTable(api.listUsers, {
 
 ## 行选择
 
-Hook 返回受控选择状态，并通过 `tableProps` 交给 `AIITable`。
+行选择为 **opt-in**：必须显式传入 `selectionType`，`tableProps` 才会包含 `selectedRowKeys` / `onSelectionChange` / `selectionType`。未传入时不会出现选择列（避免默认带上 `selectedRowKeys: []` 触发 `AIITable` 选择 UI）。
+
+Hook 内部仍维护 `selectedRowKeys` / `selectedRows` / `clearSelection()`，与是否启用选择列无关。
 
 ```tsx
 const { tableProps, selectedRowKeys, selectedRows, clearSelection } = useTable(api.listUsers, {
@@ -297,6 +299,9 @@ return (
 );
 ```
 
+> [!IMPORTANT]
+> 只读列表不要传 `selectionType`。批量删除、导出勾选等能力必须配置 `selectionType: 'checkbox'`（或 `'radio'`）。
+
 `selectedRows` 只从当前 `dataSource` 中按 `rowKey` 查找。远程分页切换后，上一页仍保留的 key 可能无法在当前页解析出对应行对象。
 
 ## 静态数据
@@ -315,48 +320,48 @@ const { tableProps, dataSource, setDataSource } = useTable(null, {
 
 ## 配置
 
-| 配置                     | 类型                               | 默认值             | 说明               |
-| ------------------------ | ---------------------------------- | ------------------ | ------------------ |
-| `dataSource`             | `RecordType[]`                     | `[]`               | 静态数据源         |
-| `params`                 | `Params`                           | -                  | 额外请求参数       |
-| `rowKey`                 | `TableProps['rowKey']`             | `'id'`             | 表格行主键         |
-| `defaultPageSize`        | `number`                           | `10`               | 默认每页条数       |
-| `defaultCurrent`         | `number`                           | `1`                | 默认当前页         |
-| `manual`                 | `boolean`                          | `false`            | 是否跳过自动请求   |
-| `ready`                  | `boolean`                          | `true`             | 请求是否就绪       |
-| `refreshDeps`            | `readonly unknown[]`               | `[]`               | 自动刷新依赖       |
-| `fieldNames`             | `TableFieldNames`                  | 默认字段约定       | 请求与响应字段映射 |
-| `mapPayload`             | `(params) => ApiPayload`           | -                  | 自定义接口入参     |
-| `mapResponse`            | `(response) => TableRequestResult` | -                  | 自定义响应归一化   |
-| `paginationMode`         | `'simple' \| 'full'`               | 由 `AIITable` 决定 | 分页展示模式       |
-| `pagination`             | `TablePaginationConfig \| false`   | -                  | 分页配置           |
-| `selectionType`          | `'checkbox' \| 'radio'`            | Ant Design 默认    | 行选择类型         |
-| `defaultSelectedRowKeys` | `Key[]`                            | `[]`               | 初始选中行         |
-| `onSelectionChange`      | `(keys, rows, info) => void`       | -                  | 选择变化回调       |
-| `onSuccess`              | `(result, params) => void`         | -                  | 请求成功回调       |
-| `onError`                | `(error) => void`                  | -                  | 请求失败回调       |
+| 配置                     | 类型                               | 默认值             | 说明                       |
+| ------------------------ | ---------------------------------- | ------------------ | -------------------------- |
+| `dataSource`             | `RecordType[]`                     | `[]`               | 静态数据源                 |
+| `params`                 | `Params`                           | -                  | 额外请求参数               |
+| `rowKey`                 | `TableProps['rowKey']`             | `'id'`             | 表格行主键                 |
+| `defaultPageSize`        | `number`                           | `10`               | 默认每页条数               |
+| `defaultCurrent`         | `number`                           | `1`                | 默认当前页                 |
+| `manual`                 | `boolean`                          | `false`            | 是否跳过自动请求           |
+| `ready`                  | `boolean`                          | `true`             | 请求是否就绪               |
+| `refreshDeps`            | `readonly unknown[]`               | `[]`               | 自动刷新依赖               |
+| `fieldNames`             | `TableFieldNames`                  | 默认字段约定       | 请求与响应字段映射         |
+| `mapPayload`             | `(params) => ApiPayload`           | -                  | 自定义接口入参             |
+| `mapResponse`            | `(response) => TableRequestResult` | -                  | 自定义响应归一化           |
+| `paginationMode`         | `'simple' \| 'full'`               | 由 `AIITable` 决定 | 分页展示模式               |
+| `pagination`             | `TablePaginationConfig \| false`   | -                  | 分页配置                   |
+| `selectionType`          | `'checkbox' \| 'radio'`            | 不传则不启用选择列 | 显式传入后才注入选择 props |
+| `defaultSelectedRowKeys` | `Key[]`                            | `[]`               | 初始选中行                 |
+| `onSelectionChange`      | `(keys, rows, info) => void`       | -                  | 选择变化回调               |
+| `onSuccess`              | `(result, params) => void`         | -                  | 请求成功回调               |
+| `onError`                | `(error) => void`                  | -                  | 请求失败回调               |
 
 > [!WARNING]
 > `onError` 只负责通知，不能吞掉错误。接口失败后，`run()`、`refresh()` 和 `reset()` 返回的 Promise 仍会 reject；事件处理器中应按业务需要捕获错误。
 
 ## 返回值
 
-| 字段               | 说明                                        |
-| ------------------ | ------------------------------------------- |
-| `tableProps`       | 可直接传给 `AIITable` 的受控属性            |
-| `loading`          | 当前请求加载状态                            |
-| `dataSource`       | 当前表格数据                                |
-| `pagination`       | 内部分页状态 `{ current, pageSize, total }` |
-| `filters`          | 当前 Ant Design 筛选状态                    |
-| `sorter`           | 当前 Ant Design 排序状态                    |
-| `selectedRowKeys`  | 当前选中行 key                              |
-| `selectedRows`     | 当前页可解析的选中行数据                    |
-| `refresh()`        | 按当前状态重新请求                          |
-| `reset()`          | 重置分页、筛选和排序后请求                  |
-| `clearSelection()` | 清空选中项并触发选择回调                    |
-| `setDataSource()`  | 手动设置表格数据                            |
-| `setPagination()`  | 手动设置内部分页状态                        |
-| `run(patch)`       | 合并查询参数并从默认页请求                  |
+| 字段               | 说明                                                                |
+| ------------------ | ------------------------------------------------------------------- |
+| `tableProps`       | 可直接传给 `AIITable` 的受控属性；无 `selectionType` 时不含选择字段 |
+| `loading`          | 当前请求加载状态                                                    |
+| `dataSource`       | 当前表格数据                                                        |
+| `pagination`       | 内部分页状态 `{ current, pageSize, total }`                         |
+| `filters`          | 当前 Ant Design 筛选状态                                            |
+| `sorter`           | 当前 Ant Design 排序状态                                            |
+| `selectedRowKeys`  | 当前选中行 key                                                      |
+| `selectedRows`     | 当前页可解析的选中行数据                                            |
+| `refresh()`        | 按当前状态重新请求                                                  |
+| `reset()`          | 重置分页、筛选和排序后请求                                          |
+| `clearSelection()` | 清空选中项并触发选择回调                                            |
+| `setDataSource()`  | 手动设置表格数据                                                    |
+| `setPagination()`  | 手动设置内部分页状态                                                |
+| `run(patch)`       | 合并查询参数并从默认页请求                                          |
 
 ## 完整组合
 
@@ -427,6 +432,8 @@ function UserListPage() {
 - [`AIITable`](./AIITable.md)：表格展示、操作列与工具栏
 - [`AIISearch`](./AIISearch.md)：响应式查询表单
 - [`Fetch`](./Fetch.md)：生成客户端与统一错误处理
+- [列表页三位一体设计规范](../spec/spec-design-list-page-trinity.md)
+- [列表页开发规范](../spec/spec-process-crud-list-page.md)
 
 ## 开发检查
 

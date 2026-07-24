@@ -1,8 +1,8 @@
 ---
 title: AII-NEXT 代码质量与提交校验规范
-version: 1.0
+version: 1.1
 date_created: 2026-07-22
-last_updated: 2026-07-22
+last_updated: 2026-07-24
 owner: AII-NEXT 维护团队
 tags: [process, tooling, lint, format, git, husky, oxlint, oxfmt]
 ---
@@ -91,7 +91,7 @@ tags: [process, tooling, lint, format, git, husky, oxlint, oxfmt]
 
 - **REQ-020**: Oxfmt MUST 保留与既有风格一致的关键选项：`printWidth: 140`、`singleQuote: true`、`jsxSingleQuote: true`、`trailingComma: "all"`、`singleAttributePerLine: true`、`endOfLine: "lf"` 等（以 `.oxfmtrc.json` 为准）。
 - **REQ-021**: Tailwind class 排序 MUST 通过 Oxfmt `sortTailwindcss` 完成，stylesheet 指向 `./src/index.css`。
-- **CON-001**: 生成文件与锁文件（如 `src/routeTree.gen.ts`、`pnpm-lock.yaml`）MUST 列入 ignore（见 `.oxfmtrc.json` / `.oxlintrc.json`），不得为通过校验而手改生成物的格式期望。
+- **CON-001**: 生成文件与锁文件（如 `src/routeTree.gen.ts`、`pnpm-lock.yaml`、主题同步产物 `src/theme/antd-tokens.css`）MUST 列入 ignore（见 `.oxfmtrc.json` / `.oxlintrc.json`），不得为通过校验而手改生成物的格式期望。
 
 ### 提交前强制门禁（pre-commit）
 
@@ -282,6 +282,7 @@ pnpm exec oxlint --fix --deny-warnings .
 
 - [AII-NEXT 前端基座架构规范](./spec-architecture-aii-next-frontend-base.md)
 - [列表页开发规范（查询展示与 CRUD）](./spec-process-crud-list-page.md)
+- [列表页三位一体设计规范](./spec-design-list-page-trinity.md)
 - [国际化文案规范](./spec-process-i18n-locale.md)
 - [AII-NEXT README](../README.md) — 脚本说明与快速开始
 - [Oxlint 配置参考](https://oxc.rs/docs/guide/usage/linter/config-file-reference.html)

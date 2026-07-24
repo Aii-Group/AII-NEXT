@@ -217,15 +217,19 @@ modal.setLoading(false);
 
 ## Provider 接入
 
-新增独立入口时，应将 `ModalProvider` 放在 Ant Design 上下文内部：
+新增独立入口时，应将 `ModalProvider` 放在 Ant Design 上下文内部，并与 `DrawerProvider` 按基座顺序装配：
 
 ```tsx
 <AntdProvider>
   <AntdAppProvider>
-    <ModalProvider>{children}</ModalProvider>
+    <ModalProvider>
+      <DrawerProvider>{children}</DrawerProvider>
+    </ModalProvider>
   </AntdAppProvider>
 </AntdProvider>
 ```
+
+侧滑详情请使用 [`DrawerProvider`](./DrawerProvider.md)（`window.$drawer`）；表单提交与确认类交互继续使用本 Provider / `window.$modal`。
 
 ## 模块结构
 
@@ -236,11 +240,15 @@ modal.setLoading(false);
 | [`src/contexts/modal-context.ts`](../src/contexts/modal-context.ts)     | React Context                |
 | [`src/types/modal.ts`](../src/types/modal.ts)                           | 配置与 API 类型              |
 
+## 相关文档
+
+- [`DrawerProvider`](./DrawerProvider.md)：命令式业务抽屉
+- [列表页开发规范](../spec/spec-process-crud-list-page.md)：写操作弹窗约定
+
 ## 开发检查
 
 ```bash
 pnpm typecheck
 pnpm exec oxlint --deny-warnings src/providers/ModalProvider.tsx src/hooks/use-modal.ts src/contexts/modal-context.ts src/types/modal.ts
-pnpm exec antd lint src/providers/ModalProvider.tsx --format json
 pnpm exec oxfmt --check readme/ModalProvider.md
 ```

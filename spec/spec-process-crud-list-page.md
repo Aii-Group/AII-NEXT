@@ -1,8 +1,8 @@
 ---
 title: AII-NEXT 列表页开发规范（查询展示与 CRUD）
-version: 1.2
+version: 1.3
 date_created: 2026-07-20
-last_updated: 2026-07-20
+last_updated: 2026-07-24
 owner: AII-NEXT 维护团队
 tags: [process, design, app, crud, list-page, read-only]
 ---
@@ -110,7 +110,7 @@ tags: [process, design, app, crud, list-page, read-only]
 - **REQ-020**: 列表页 MUST 使用 `useTable` + `AIITable`，不得自建分页请求状态机。有筛选条件时 MUST 使用 `AIISearch`；无任何筛选时 MAY 省略 `AIISearch`，仅保留表格与分页。
 - **REQ-021**: 存在筛选时，页面 MUST 使用 `useState`（或等价）持有 Query State，并将其传入 `useTable(..., { params: query })`；无筛选时可不维护 Query State。
 - **REQ-022**: 使用 `AIISearch` 时：`onSearch` MUST 更新 Query State 并调用 `run(values)`；`onReset` MUST 清空 Query State 并调用 `run({})`（或空查询对象）。
-- **REQ-023**: `AIITable` MUST 展开 `tableProps`，并传入业务 `columns`；仅当启用批量操作（如 `batchDelete`）时 MUST 配置 `selectionType: 'checkbox'`（或项目约定的选择类型）。只读页默认 MUST NOT 启用行选择，除非存在导出勾选等只读批量能力。
+- **REQ-023**: `AIITable` MUST 展开 `tableProps`，并传入业务 `columns`。行选择为 **opt-in**：仅当启用批量操作（如 `batchDelete`）或其它勾选能力时，MUST 向 `useTable` 传入 `selectionType: 'checkbox'`（或 `'radio'`）；未传 `selectionType` 时 `tableProps` MUST NOT 携带选择字段，表格 MUST NOT 出现选择列。只读页默认 MUST NOT 启用行选择，除非存在导出勾选等只读批量能力。不得为「未选中」而向 `AIITable` 传入空的 `selectedRowKeys: []`（会误开选择列）。详见 [列表页三位一体设计规范](./spec-design-list-page-trinity.md)。
 - **REQ-024**: `toolbar.actions` 按能力配置：启用 `create` 时 MUST 提供新建类主操作；只读页 MAY 省略整个 `toolbar`，或仅提供无副作用操作（如「刷新」调用 `refresh()`）。不得依赖示例页的「重置种子数据」。
 
 ### 3.4 可选 UI（非必须）
@@ -273,9 +273,11 @@ const [query, setQuery] = useState<ResourceQuery>({});
 const { tableProps, run, refresh, clearSelection, selectedRowKeys } = useTable(listResources, {
   rowKey: 'id',
   params: query,
-  // selectionType: 'checkbox', // 仅批量写操作或其它勾选能力时启用
+  // selectionType: 'checkbox', // opt-in：仅批量写操作或其它勾选能力时启用；未传则无选择列
 });
 ```
+
+> `useTable` 仅在显式传入 `selectionType` 时向 `tableProps` 注入 `selectedRowKeys` / `onSelectionChange` / `selectionType`。Hook 仍始终暴露 `selectedRowKeys` / `clearSelection`，但不得依赖空数组 props 来「关闭」选择 UI。
 
 | 场景            | 成功后的列表刷新策略             | 适用档位                 |
 | --------------- | -------------------------------- | ------------------------ |
@@ -294,7 +296,7 @@ const { tableProps, run, refresh, clearSelection, selectedRowKeys } = useTable(l
 | `toolbar.left`    | 否（OPT-002）                          | 辅助说明，可省略                                                                 |
 | `rowActions`      | 有行级编辑/删除/查看时                 | 危险操作 `danger: true`                                                          |
 | `batchActions`    | 有批量删除等时                         | `disabled: (keys) => keys.length === 0`                                          |
-| `selectionType`   | 有批量勾选能力时                       | 只读默认不启用                                                                   |
+| `selectionType`   | 有批量勾选能力时                       | **opt-in**；只读默认不传；传给 `useTable` 而非仅靠空 `selectedRowKeys`           |
 
 ### 4.6 i18n Key 建议（业务命名空间）
 
@@ -326,6 +328,8 @@ const { tableProps, run, refresh, clearSelection, selectedRowKeys } = useTable(l
 - **AC-009**: Given 新增业务文案，When 切换 `zh-CN` / `en-US`，Then 列表、（若有）表单/弹窗/确认框文案均来自 i18n，无硬编码用户文案。
 - **AC-010**: Given 变更已合入，When 执行 `pnpm typecheck`，Then 通过且路由类型由文件路由自动生成。
 - **AC-011**: Given 页面档位为 Read-only，When 检查代码与 UI，Then 不存在新建/编辑/删除入口及无用的 Form/mutation 模块。
+- **AC-012**: Given 页面未传 `selectionType`，When 渲染 `AIITable {...tableProps}`，Then 不出现行选择列。
+- **AC-013**: Given 页面传入 `selectionType: 'checkbox'`，When 渲染表格，Then 出现多选列；删除成功后 `clearSelection` 生效。
 
 ## 6. Test Automation Strategy
 
@@ -504,6 +508,7 @@ window.$modal.confirm({
 - [ ] Feature 模块包含 types、list 数据访问与 barrel 导出
 - [ ] 路由位于 `/_app/_authentication`，未手改 `routeTree.gen.ts`
 - [ ] 使用 `useTable` + `AIITable`；有筛选则使用 `AIISearch` 与正确的 `run`/`refresh`
+- [ ] 行选择仅在需要时通过 `selectionType` opt-in；未传时无选择列
 - [ ] 用户文案遵循 [国际化文案规范](./spec-process-i18n-locale.md)：同大项同文件、扁平 Key、先复用再 common/独有；双语 Key 对称
 - [ ] 日期格式化走 `@/utils/dayjs`
 - [ ] 未把示例「重置种子数据」带入业务页
@@ -524,12 +529,14 @@ window.$modal.confirm({
 ## 11. Related Specifications / Further Reading
 
 - [AII-NEXT 前端基座架构规范](./spec-architecture-aii-next-frontend-base.md)
+- [列表页三位一体设计规范](./spec-design-list-page-trinity.md)
 - [国际化文案规范](./spec-process-i18n-locale.md)
 - [代码质量与提交校验规范](./spec-process-lint-format-commit.md)
 - [AIITable 组件文档](../readme/AIITable.md)
 - [AIISearch 组件文档](../readme/AIISearch.md)
 - [useTable Hook 文档](../readme/useTable.md)
 - [ModalProvider 文档](../readme/ModalProvider.md)
+- [DrawerProvider 文档](../readme/DrawerProvider.md)
 - [Access 权限文档](../readme/Access.md)
 - [AII-NEXT README](../README.md) — 示例用户页说明
 - 参考实现（完整 CRUD）：`src/routes/_app/_authentication/demo/users.tsx`、`src/features/demo-users/`

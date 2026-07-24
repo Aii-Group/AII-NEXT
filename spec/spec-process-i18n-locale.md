@@ -1,8 +1,8 @@
 ---
 title: AII-NEXT 国际化文案规范
-version: 1.0
+version: 1.1
 date_created: 2026-07-20
-last_updated: 2026-07-20
+last_updated: 2026-07-24
 owner: AII-NEXT 维护团队
 tags: [process, design, app, i18n, locale]
 ---
@@ -321,6 +321,7 @@ content={t('Orders.Delete_Confirm_Content', { orderNo })}
 
 - [AII-NEXT 前端基座架构规范](./spec-architecture-aii-next-frontend-base.md)
 - [列表页开发规范（查询展示与 CRUD）](./spec-process-crud-list-page.md)
+- [列表页三位一体设计规范](./spec-design-list-page-trinity.md)
 - [代码质量与提交校验规范](./spec-process-lint-format-commit.md)
 - [AII-NEXT README](../README.md)
 - 参考：`locales/zh-CN/common.yaml`、`locales/zh-CN/demo.yaml`

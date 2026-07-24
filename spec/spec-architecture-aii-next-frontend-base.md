@@ -1,8 +1,8 @@
 ---
 title: AII-NEXT 前端基座架构规范
-version: 1.1
+version: 1.2
 date_created: 2026-07-16
-last_updated: 2026-07-22
+last_updated: 2026-07-24
 owner: AII-NEXT 维护团队
 tags: [architecture, design, app, micro-frontend, react]
 ---
@@ -75,8 +75,8 @@ tags: [architecture, design, app, micro-frontend, react]
 - **REQ-007**: 全局 Provider 装配顺序 MUST 为：`ThemeRoot` → `I18nextProvider` → `AppAuthProvider` → `AntdProvider` → `AntdAppProvider` → `ModalProvider` → `DrawerProvider` → `IconParkProvider` → `RouterProvider`。
 - **REQ-008**: 用户状态 MUST 由 Zustand `useUserStore` 管理；偏好 MUST 由 `usePreferenceStore` 管理。偏好与用户身份投影 MUST 持久化至 `sessionStorage`；Access Token MUST NOT 写入任何 Web Storage（见 COM-001），运行时 Token 由 `@asiainfo/auth` 或宿主 `globalData` 提供并缓存在内存态 `user.token`。
 - **REQ-009**: HTTP 请求 MUST 通过 `src/fetch` 提供的 `apiInterceptors` 统一注入 `Authorization` 与 `Accept-Language`。
-- **REQ-010**: 列表页 SHOULD 优先采用 `AIISearch` + `useTable` + `AIITable` 组合，不得重复实现分页/筛选/排序/行选择状态机。
-- **REQ-011**: 业务弹窗与抽屉 SHOULD 通过 `ModalProvider` / `DrawerProvider` 命令式 API 打开，避免在页面层散落大量 `useState` 控制可见性。
+- **REQ-010**: 列表页 SHOULD 优先采用 `AIISearch` + `useTable` + `AIITable` 组合，不得重复实现分页/筛选/排序/行选择状态机。行选择 MUST 经 `useTable` 的 `selectionType` **显式 opt-in**；未传入时 MUST NOT 出现选择列（见 [列表页三位一体设计规范](./spec-design-list-page-trinity.md)）。
+- **REQ-011**: 业务弹窗与抽屉 SHOULD 通过 `ModalProvider`（`useModal`）/ `DrawerProvider`（`window.$drawer`）命令式 API 打开，避免在页面层散落大量 `useState` 控制可见性。表单写操作优先 Modal；侧滑详情优先 Drawer。
 - **REQ-012**: 文案 MUST 通过 i18next 管理，支持 `zh-CN` 与 `en-US`；禁止在 JSX 中硬编码面向用户的字符串（调试日志除外）。
 - **REQ-013**: 品牌色修改 MUST 通过 `src/constants/brand.ts` 的 `BrandSeed` 定义，并执行 `pnpm theme:sync` 同步 Ant Design 与 Tailwind 主题产物。
 - **REQ-014**: API 客户端 SHOULD 通过 `pnpm swagger-g` 从 Swagger 生成至 `src/api`，业务层不得手写与 OpenAPI 重复的 DTO 类型（生成类型可 re-export）。
@@ -266,7 +266,15 @@ interface MenuOptions {
 
 可通过 `fieldNames`、`mapPayload`、`mapResponse` 覆盖。
 
-### 4.8 环境变量
+**行选择**：`selectionType` 未传时，`tableProps` 不得包含选择相关字段；需要多选/单选时显式传入 `'checkbox'` / `'radio'`。完整契约见 [列表页三位一体设计规范](./spec-design-list-page-trinity.md)。
+
+### 4.8 Drawer 命令式 API
+
+- 全局入口：`window.$drawer`（`open` / `close` / `update`）。
+- 配置类型：`Omit<DrawerProps, 'open'>`；默认 `resizable: true`。
+- 无 `useDrawer` Hook；用法见 [DrawerProvider 文档](../readme/DrawerProvider.md)。
+
+### 4.9 环境变量
 
 | 变量                      | 必填               | 说明                                                          |
 | ------------------------- | ------------------ | ------------------------------------------------------------- |
@@ -289,8 +297,10 @@ interface MenuOptions {
 - **AC-006**: Given `menu.ts` 导出空数组，When 独立模式渲染布局，Then 仅显示顶栏与内容区，无侧栏。
 - **AC-007**: Given 修改 `BrandSeed` 并执行 `theme:sync`，When 刷新页面，Then Ant Design 主色与 Tailwind CSS 变量同步更新。
 - **AC-008**: Given 标准列表 API，When 使用 `useTable(api.listX)` + `AIITable`，Then 首屏自动请求、分页切换触发新请求、过期响应被忽略。
+- **AC-008a**: Given `useTable` 未传 `selectionType`，When 展开 `tableProps` 到 `AIITable`，Then 表格不出现行选择列；传入 `selectionType: 'checkbox'` 后出现多选列。
 - **AC-009**: Given `pnpm build` 成功，When 部署 `dist/` 静态资源，Then 应用可在配置的路径下独立访问或通过 micro-app 加载。
 - **AC-010**: Given 新增路由文件于 `src/routes/`，When 开发服务运行或构建，Then `routeTree.gen.ts` 自动更新且 `pnpm typecheck` 通过。
+- **AC-011**: Given 调用 `window.$drawer.open({ title, children })`，When Provider 已挂载，Then 抽屉打开且默认可调整宽度（`resizable`）。
 
 ## 6. Test Automation Strategy
 
@@ -423,7 +433,8 @@ if (!isMicroAppEnvironment()) {
 - [ ] 是否使用 `@/` 别名与既定 Provider/Router 结构
 - [ ] 用户可见文案是否进入 i18n 资源文件
 - [ ] API 是否经生成客户端 + `apiInterceptors` 调用
-- [ ] 列表页是否复用 `useTable` / `AIITable` 而非自建分页逻辑
+- [ ] 列表页是否复用 `useTable` / `AIITable` 而非自建分页逻辑；行选择是否经 `selectionType` opt-in
+- [ ] 弹层是否使用 `useModal` / `window.$drawer`，而非页面散落 `open` state
 - [ ] 微前端相关逻辑是否经 `utils/micro` 与 `useMicroAppData` 统一处理
 - [ ] 品牌/主题变更是否走 `BrandSeed` + `theme:sync`
 - [ ] `useUserStore` persist 是否剥离 `token`，且未将 Token 写入 Web Storage
@@ -436,6 +447,7 @@ if (!isMicroAppEnvironment()) {
 
 - [AII-NEXT README](../README.md) — 项目概览、快速开始、环境变量
 - [列表页开发规范（查询展示与 CRUD）](./spec-process-crud-list-page.md) — 列表页能力档位、只读展示与完整 CRUD 约定
+- [列表页三位一体设计规范](./spec-design-list-page-trinity.md) — AIISearch / useTable / AIITable 设计契约与 selectionType opt-in
 - [国际化文案规范](./spec-process-i18n-locale.md) — 文案文件归属、扁平 Key、复用与公共/独有决策
 - [代码质量与提交校验规范](./spec-process-lint-format-commit.md) — Oxlint / Oxfmt、Husky 门禁、Commitlint
 - [AIITable 组件文档](../readme/AIITable.md)
@@ -443,6 +455,7 @@ if (!isMicroAppEnvironment()) {
 - [useTable Hook 文档](../readme/useTable.md)
 - [Fetch / 拦截器文档](../readme/Fetch.md)
 - [ModalProvider 文档](../readme/ModalProvider.md)
+- [DrawerProvider 文档](../readme/DrawerProvider.md)
 - [Access 按钮权限文档](../readme/Access.md)
 - [micro-app 官方文档](https://jd-opensource.github.io/micro-app/docs.html)
 - [TanStack Router 文件路由](https://tanstack.com/router/latest/docs/framework/react/routing/file-based-routing)

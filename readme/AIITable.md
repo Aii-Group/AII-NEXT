@@ -109,7 +109,9 @@ export function BasicTable({ dataSource }: { dataSource: TableRow[] }) {
 
 ## 行选择
 
-`selectionType` 启用项目封装的行选择。也可以传入 `rowSelection` 使用 Ant Design 的完整配置；两者同时存在时，`rowSelection` 中的同名字段优先。
+以下任一存在时，`AIITable` 会启用选择列：`selectionType`、`selectedRowKeys`、`defaultSelectedRowKeys`、`onSelectionChange`、`rowSelection`。不要为了「未选中」而传入空的 `selectedRowKeys: []`——这会打开选择列。与 [`useTable`](./useTable.md) 组合时，请通过 Hook 的 `selectionType` **显式 opt-in**（未传则 `tableProps` 不含选择字段）。
+
+`selectionType` 设置多选 / 单选。也可以传入 `rowSelection` 使用 Ant Design 的完整配置；两者同时存在时，`rowSelection` 中的同名字段优先。选择列默认宽度为 `55`。
 
 ```tsx
 import { useState } from 'react';
@@ -206,7 +208,7 @@ export function SelectableTable({ dataSource }: { dataSource: TableRow[] }) {
 />
 ```
 
-操作列默认宽度为 `160`、居中对齐、固定在右侧，最多直接显示两个操作。`hidden` 和 `disabled` 均支持布尔值或基于当前行的判断函数。配置 `permission`（对应宿主 `menuCode`）后，无权限的操作会自动隐藏，详见 [Access](./Access.md)。
+操作列默认宽度为 `180`、居中对齐、固定在右侧，最多直接显示两个操作。`hidden` 和 `disabled` 均支持布尔值或基于当前行的判断函数。配置 `permission`（对应宿主 `menuCode`）后，无权限的操作会自动隐藏，详见 [Access](./Access.md)。
 
 完全自定义操作列：
 
@@ -343,6 +345,8 @@ import { Plus } from '@icon-park/react';
 
 - [`useTable`](./useTable.md)：服务端数据、分页、筛选与排序状态
 - [`AIISearch`](./AIISearch.md)：列表页查询表单
+- [`Access`](./Access.md)：操作 `permission` 与按钮级 ACL
+- [列表页三位一体设计规范](../spec/spec-design-list-page-trinity.md)
 
 ## 开发检查
 

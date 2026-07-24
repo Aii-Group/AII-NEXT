@@ -40,7 +40,7 @@ export interface AIITableActionColumnConfig<RecordType extends object = object> 
 > {
   /** 列标题，默认 i18n `AII_Table.Action` */
   title?: ReactNode;
-  /** 列宽，默认 `160` */
+  /** 列宽，默认 `180` */
   width?: number;
   /** 固定列，默认 `right` */
   fixed?: ColumnType<RecordType>['fixed'];
@@ -91,11 +91,11 @@ export interface AIITableProps<RecordType extends object = object> extends Omit<
   rowKey?: TableProps<RecordType>['rowKey'];
   /** 分页配置，`false` 关闭分页 */
   pagination?: TableProps<RecordType>['pagination'];
-  /** 分页模式：`simple` 简约 | `full` 完整，默认 `full` */
+  /** 分页模式：`simple` 简约 | `full` 完整，默认 `simple` */
   paginationMode?: AIITablePaginationMode;
-  /** 表格尺寸，默认 `middle` */
+  /** 表格尺寸，默认 `large` */
   size?: TableProps<RecordType>['size'];
-  /** 滚动配置，默认开启横向 `max-content` 和响应式纵向表体滚动 */
+  /** 滚动配置，默认开启横向 `max-content` */
   scroll?: TableProps<RecordType>['scroll'];
   /** 表头吸顶，默认开启；`false` 关闭；对象可配置 `offsetHeader` / `getContainer` 等 */
   sticky?: TableProps<RecordType>['sticky'];
@@ -103,10 +103,10 @@ export interface AIITableProps<RecordType extends object = object> extends Omit<
   wrapperClassName?: string;
   /** 是否包裹卡片样式容器，默认 `true` */
   card?: boolean;
-  /** 自定义空状态，默认使用 i18n `common.empty` */
+  /** 自定义空状态，默认使用 i18n `common:General.Empty` */
   empty?: ReactNode;
   locale?: TableProps<RecordType>['locale'];
-  /** 行选择类型：`checkbox` 多选，`radio` 单选 */
+  /** 行选择类型：`checkbox` 多选，`radio` 单选；与其它选择 props 任一存在即启用选择列 */
   selectionType?: AIITableSelectionType;
   /** 受控已选行 key */
   selectedRowKeys?: Key[];

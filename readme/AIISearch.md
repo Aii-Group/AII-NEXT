@@ -88,11 +88,14 @@ export function UserSearch() {
 
 ## 与 useTable 配合
 
-列表页通常将查询值交给 `useTable` 的 `run` 方法。提交新条件时会从第一页请求，重置时可不带条件重新请求。
+列表页通常用页面 Query State 持有筛选条件，并传给 `useTable` 的 `params`。`onSearch` / `onReset` 须同步更新 Query State 再调用 `run`（重置用 `run({})`）。`onReset` **不会**自动发起请求。
 
 ```tsx
+const [query, setQuery] = useState<SearchValues>({});
+
 const { tableProps, run } = useTable(api.list, {
   rowKey: 'id',
+  params: query,
 });
 
 return (
@@ -100,8 +103,14 @@ return (
     <AIISearch<SearchValues>
       wrapperClassName='mb-4'
       items={items}
-      onSearch={(values) => run(values)}
-      onReset={() => run()}
+      onSearch={(values) => {
+        setQuery(values);
+        return run(values);
+      }}
+      onReset={() => {
+        setQuery({});
+        return run({});
+      }}
     />
     <AIITable
       {...tableProps}
@@ -110,6 +119,9 @@ return (
   </>
 );
 ```
+
+> [!TIP]
+> 完整契约见 [列表页三位一体设计规范](../spec/spec-design-list-page-trinity.md) 与 [列表页开发规范](../spec/spec-process-crud-list-page.md)。
 
 ## 响应式布局
 
@@ -340,6 +352,12 @@ import DefaultAIISearch, {
 
 > [!NOTE]
 > 该组件是 AII-NEXT 的内部组件，默认依赖项目中的 Ant Design、Tailwind CSS、i18next、IconPark、Motion、路由上下文和 `LayoutWrapper`。在项目外复用时，需要同时迁移这些运行环境或替换对应的内部依赖。
+
+## 相关文档
+
+- [`useTable`](./useTable.md)：列表请求与 Query State
+- [`AIITable`](./AIITable.md)：表格展示
+- [列表页三位一体设计规范](../spec/spec-design-list-page-trinity.md)
 
 ## 开发检查
 

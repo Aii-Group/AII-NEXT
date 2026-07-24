@@ -178,6 +178,11 @@ window.microApp.dispatch({
 | [`src/fetch/error-notify.ts`](../src/fetch/error-notify.ts)       | 全局错误提示 leading 限流   |
 | [`src/fetch/session-expired.ts`](../src/fetch/session-expired.ts) | 独立环境 401 / 会话失效处理 |
 
+## 相关文档
+
+- [前端基座架构规范](../spec/spec-architecture-aii-next-frontend-base.md) — 请求头与错误分发契约
+- [`useTable`](./useTable.md)：列表请求消费生成客户端
+
 ## 开发检查
 
 ```bash
