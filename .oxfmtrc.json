@@ -26,6 +26,7 @@
     "pnpm-lock.yaml",
     "skills-lock.json",
     ".agents/",
-    ".claude/"
+    ".claude/",
+    "src/theme/antd-tokens.css"
   ]
 }
