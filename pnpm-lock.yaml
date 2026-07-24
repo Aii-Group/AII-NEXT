@@ -54,8 +54,8 @@ importers:
         specifier: ^17.0.8
         version: 17.0.8(i18next@26.3.4(typescript@6.0.3))(react-dom@19.2.7(react@19.2.7))(react@19.2.7)(typescript@6.0.3)
       swagger-to-ts-axios:
-        specifier: ^2.2.1
-        version: 2.2.1
+        specifier: ^2.2.2
+        version: 2.2.2
       yaml:
         specifier: ^2.9.0
         version: 2.9.0
@@ -1556,8 +1556,8 @@ packages:
       react-dom:
         optional: true
 
-  fs-extra@11.3.6:
-    resolution: {integrity: sha512-w8ZNZr2mKIc7qeNaQ9AVPT1+iFaI+Avd4xudVOvdDJ8VytREi1Ft5Ih7hd9jjehod8vAM5GMsfQ/TpPf4EyoEA==}
+  fs-extra@11.4.0:
+    resolution: {integrity: sha512-EQsFzMUJkCKGr1ePqlYADkIUmHW1s3ZXr5Yqy6wbGrfUCphpl2maM/kyOIRA2HpP3AaFQTZXD4ldjek+nccddA==}
     engines: {node: '>=14.14'}
 
   fsevents@2.3.3:
@@ -2036,8 +2036,8 @@ packages:
   stylis@4.4.0:
     resolution: {integrity: sha512-5Z9ZpRzfuH6l/UAvCPAPUo3665Nk2wLaZU3x+TLHKVzIz33+sbJqbtrYoC3KD4/uVOr2Zp+L0LySezP9OHV9yA==}
 
-  swagger-to-ts-axios@2.2.1:
-    resolution: {integrity: sha512-0tHS68C+MbbFE3L7UyEnzhXRjDKUFwEFSMjhk/t3vcPOW3FRcnYEsgoBUPunyUt/nzUGSgIgtGgdZ9B+2hQYMg==}
+  swagger-to-ts-axios@2.2.2:
+    resolution: {integrity: sha512-MRmPaPju0N3qS9B2XICuic8M7pjGN296j9Q5Ljskk5F9emY4x959VZXYkv3kj0se57Mzgq2tN5MrJf0k8Dr+lQ==}
     engines: {node: '>=16.0.0'}
     hasBin: true
 
@@ -3602,7 +3602,7 @@ snapshots:
       react: 19.2.7
       react-dom: 19.2.7(react@19.2.7)
 
-  fs-extra@11.3.6:
+  fs-extra@11.4.0:
     dependencies:
       graceful-fs: 4.2.11
       jsonfile: 6.2.1
@@ -4063,11 +4063,11 @@ snapshots:
 
   stylis@4.4.0: {}
 
-  swagger-to-ts-axios@2.2.1:
+  swagger-to-ts-axios@2.2.2:
     dependencies:
       axios: 1.18.1
       commander: 13.1.0
-      fs-extra: 11.3.6
+      fs-extra: 11.4.0
       jiti: 2.7.0
       yaml: 2.9.0
     transitivePeerDependencies:
