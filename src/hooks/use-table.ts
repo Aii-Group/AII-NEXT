@@ -71,7 +71,7 @@ export interface UseTableOptions<
   paginationMode?: AIITablePaginationMode;
   /** 透传/覆盖 antd Table pagination 配置；false 关闭分页 */
   pagination?: AIITableProps<NoInfer<RecordType>>['pagination'];
-  /** 行选择类型 */
+  /** 行选择类型；传入后才启用选择列，默认不开启 */
   selectionType?: AIITableSelectionType;
   /** 默认选中的行 key */
   defaultSelectedRowKeys?: Key[];
@@ -403,31 +403,37 @@ export function useTable<
     };
   }, [isRemote, pagination, paginationProp]);
 
-  const tableProps = useMemo(
-    () => ({
+  const tableProps = useMemo(() => {
+    const base = {
       loading: isRemote ? loading : false,
       dataSource,
       pagination: mergedPagination,
       onChange: handleTableChange,
       rowKey,
+      paginationMode,
+    };
+
+    // 仅在显式传入 selectionType 时启用选择列，避免默认带上 selectedRowKeys 触发选择
+    if (!selectionType) return base;
+
+    return {
+      ...base,
       selectedRowKeys,
       onSelectionChange: handleSelectionChange,
       selectionType,
-      paginationMode,
-    }),
-    [
-      dataSource,
-      handleSelectionChange,
-      handleTableChange,
-      isRemote,
-      loading,
-      mergedPagination,
-      paginationMode,
-      rowKey,
-      selectedRowKeys,
-      selectionType,
-    ],
-  );
+    };
+  }, [
+    dataSource,
+    handleSelectionChange,
+    handleTableChange,
+    isRemote,
+    loading,
+    mergedPagination,
+    paginationMode,
+    rowKey,
+    selectedRowKeys,
+    selectionType,
+  ]);
 
   return {
     tableProps,
