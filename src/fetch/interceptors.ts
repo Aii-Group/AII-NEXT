@@ -1,20 +1,20 @@
-import { resolveAuthorizationHeader } from '@asiainfo/auth';
 import axios, { AxiosHeaders, type InternalAxiosRequestConfig } from 'axios';
 import { HttpStatus } from '@/constants/http-status';
 import { usePreferenceStore } from '@/store/preference/store';
+import { useUserStore } from '@/store/user/store';
 import { dispatchMicroErrorMessage, isMicroAppEnvironment } from '@/utils/micro';
 import { notifyStandaloneFetchError, runWithFetchErrorNotifyLimit } from './error-notify';
 import { normalizeRequestError } from './http-error';
 import { handleSessionExpired } from './session-expired';
 
-async function attachCommonHeaders(config: InternalAxiosRequestConfig) {
+function attachCommonHeaders(config: InternalAxiosRequestConfig) {
   const headers = AxiosHeaders.from(config.headers);
-  const authorization = await resolveAuthorizationHeader();
+  const token = useUserStore.getState().user?.token;
 
   headers.set('Accept-Language', usePreferenceStore.getState().locale);
 
-  if (authorization) {
-    headers.set('Authorization', authorization);
+  if (token) {
+    headers.set('Authorization', `Bearer ${token}`);
   }
 
   config.headers = headers;
