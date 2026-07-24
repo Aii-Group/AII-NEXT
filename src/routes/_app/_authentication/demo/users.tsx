@@ -81,6 +81,7 @@ function DemoUsersPage() {
       dataIndex: 'name',
       key: 'name',
       ellipsis: true,
+      fixed: 'left',
     },
     {
       title: t('Users.Email'),

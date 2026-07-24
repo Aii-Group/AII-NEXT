@@ -1,4 +1,5 @@
 import type { Key, TableRowSelection } from 'antd/es/table/interface';
+import { DEFAULT_SELECTION_COLUMN_WIDTH } from '../constants';
 import type { AIITableProps } from '../types';
 
 export function mergeRowSelection<RecordType extends object>(
@@ -17,7 +18,9 @@ export function mergeRowSelection<RecordType extends object>(
 
   if (!hasSelectionProps) return undefined;
 
-  const base: TableRowSelection<RecordType> = {};
+  const base: TableRowSelection<RecordType> = {
+    columnWidth: DEFAULT_SELECTION_COLUMN_WIDTH,
+  };
 
   if (selectionType) {
     base.type = selectionType;
@@ -36,7 +39,7 @@ export function mergeRowSelection<RecordType extends object>(
   }
 
   if (!rowSelection) {
-    return Object.keys(base).length > 0 ? base : undefined;
+    return base;
   }
 
   return {
@@ -46,5 +49,6 @@ export function mergeRowSelection<RecordType extends object>(
     defaultSelectedRowKeys: rowSelection.defaultSelectedRowKeys ?? (base.defaultSelectedRowKeys as Key[] | undefined),
     onChange: rowSelection.onChange ?? base.onChange,
     type: rowSelection.type ?? base.type,
+    columnWidth: rowSelection.columnWidth ?? base.columnWidth,
   };
 }
